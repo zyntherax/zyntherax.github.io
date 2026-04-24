@@ -19,13 +19,13 @@
             background: #000;
         }
 
-        /* ===== ANLIK GORUNEN FALLBACK (Video yokken bu calisir) ===== */
+        /* ===== ANLIK GORUNEN FALLBACK ===== */
         .fallback-bg {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -3;
-            background: 
+            background:
                 radial-gradient(ellipse at 20% 80%, rgba(120, 50, 255, 0.25) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 20%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 50%, rgba(58, 134, 255, 0.1) 0%, transparent 60%),
@@ -108,7 +108,7 @@
             50% { opacity: 1; transform: scale(1.3); }
         }
 
-        /* ===== VIDEO (Aninda yuklenmeli) ===== */
+        /* ===== VIDEO ===== */
         .video-bg {
             position: fixed;
             top: 0; left: 0;
@@ -118,7 +118,6 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             background: #000;
-            /* ANAHTAR: Tarayici videoyu hemen indirmeye baslar */
         }
 
         .video-bg.ready {
@@ -485,7 +484,7 @@
 <base target="_blank">
 </head>
 <body>
-    <!-- Fallback Arka Plan (Video yokken bu gorunur) -->
+    <!-- Fallback Arka Plan -->
     <div class="fallback-bg" id="fallbackBg">
         <div class="gradient-mesh" id="gradientMesh"></div>
         <div class="mouse-glow" id="mouseGlow"></div>
@@ -496,10 +495,9 @@
         <div id="starsContainer"></div>
     </div>
 
-    <!-- Video - preload=auto ile tarayici hemen indirmeye baslar -->
+    <!-- Video - Catbox CDN -->
     <video class="video-bg" id="videoBg" autoplay muted loop playsinline preload="auto">
-        <source src="https://raw.githubusercontent.com/zyntherax/zyntherax.github.io/main/wallpaper.webm" type="video/webm">
-        <source src="https://raw.githubusercontent.com/zyntherax/zyntherax.github.io/main/wallpaper.mp4" type="video/mp4">
+        <source src="https://files.catbox.moe/wbzyih.mp4" type="video/mp4">
     </video>
     <div class="overlay"></div>
 
@@ -568,21 +566,16 @@
         const video = document.getElementById('videoBg');
         const fallbackBg = document.getElementById('fallbackBg');
 
-        // 1) Tarayici videoyu hemen bufferlamaya baslar (preload=auto sayesinde)
-        // 2) İlk kare hazir olur olmaz goster
         video.addEventListener('loadeddata', function() {
             video.classList.add('ready');
-            // Video hazir, fallback'i hemen gizle (0.3s transition)
             fallbackBg.style.opacity = '0';
         });
 
-        // Hata olursa fallback kalici olsun
         video.addEventListener('error', function() {
             console.log('Video yuklenemedi');
             video.style.display = 'none';
         });
 
-        // Cok uzun surerse (8sn) fallback'te kal
         setTimeout(() => {
             if (!video.classList.contains('ready')) {
                 console.log('Video timeout - fallback aktif');
