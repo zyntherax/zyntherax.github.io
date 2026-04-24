@@ -24,26 +24,15 @@
             background: #000;
         }
 
-        /* YouTube Video Arka Plan */
-        .video-container {
+        /* Kendi MP4 Video Arka Plan - Hiçbir UI yok */
+        .video-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
             z-index: -2;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150vw;
-            height: 150vh;
-            transform: translate(-50%, -50%);
-            border: none;
             opacity: 0.9;
         }
 
@@ -156,32 +145,7 @@
             justify-content: center;
         }
 
-        /* Uçan yazı - ekranda rastgele belirip kaybolan */
-        .flying-text {
-            position: fixed;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 48px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            pointer-events: none;
-            z-index: 100;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-            white-space: nowrap;
-            opacity: 0;
-            will-change: transform, opacity;
-        }
-
-        /* Sabit başlık */
-        .title-container {
-            margin-bottom: 20px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
+        /* Profilimin üstünde - beyaz glow + titreme + yazılıp silinme */
         .title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 42px;
@@ -189,18 +153,73 @@
             color: #fff;
             letter-spacing: 6px;
             text-transform: uppercase;
-            opacity: 0;
-            transition: all 0.5s ease;
+            margin-bottom: 20px;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.6),
+                0 0 40px rgba(255, 255, 255, 0.4),
+                0 0 80px rgba(255, 255, 255, 0.2);
+            animation: 
+                typewriter 4s steps(9) infinite,
+                shake 0.1s infinite,
+                glowPulse 2s ease-in-out infinite;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid rgba(255, 255, 255, 0.8);
+            width: 0;
         }
 
-        .title.visible {
-            opacity: 1;
-            animation: titlePulse 2s ease-in-out infinite;
+        @keyframes typewriter {
+            0%, 100% {
+                width: 0;
+                border-right-color: rgba(255, 255, 255, 0.8);
+            }
+            40% {
+                width: 100%;
+                border-right-color: rgba(255, 255, 255, 0.8);
+            }
+            50% {
+                width: 100%;
+                border-right-color: transparent;
+            }
+            60% {
+                width: 100%;
+                border-right-color: rgba(255, 255, 255, 0.8);
+            }
+            90% {
+                width: 0;
+                border-right-color: rgba(255, 255, 255, 0.8);
+            }
         }
 
-        @keyframes titlePulse {
-            0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-            50% { text-shadow: 0 0 25px rgba(255,255,255,0.6); }
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-1px, 1px); }
+            20% { transform: translate(1px, -1px); }
+            30% { transform: translate(-1px, -1px); }
+            40% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, 0); }
+            60% { transform: translate(1px, 0); }
+            70% { transform: translate(0, 1px); }
+            80% { transform: translate(0, -1px); }
+            90% { transform: translate(1px, 1px); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px rgba(255, 255, 255, 0.8),
+                    0 0 20px rgba(255, 255, 255, 0.6),
+                    0 0 40px rgba(255, 255, 255, 0.4),
+                    0 0 80px rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                text-shadow: 
+                    0 0 20px rgba(255, 255, 255, 1),
+                    0 0 40px rgba(255, 255, 255, 0.8),
+                    0 0 60px rgba(255, 255, 255, 0.6),
+                    0 0 100px rgba(255, 255, 255, 0.4);
+            }
         }
 
         /* Roblox logosu */
@@ -306,7 +325,6 @@
 
         /* Responsive */
         @media (max-width: 480px) {
-            .flying-text { font-size: 32px; letter-spacing: 3px; }
             .title { font-size: 32px; letter-spacing: 3px; }
             .profile-gif { width: 110px; height: 110px; }
             .roblox-btn { width: 45px; height: 45px; }
@@ -316,14 +334,10 @@
 <base target="_blank">
 </head>
 <body>
-    <!-- YouTube Video Arka Plan -->
-    <div class="video-container">
-        <iframe 
-            src="https://www.youtube.com/embed/9y4UGT0GW6Y?autoplay=1&mute=1&loop=1&playlist=9y4UGT0GW6Y&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&vq=hd1080"
-            allow="autoplay; encrypted-media"
-            allowfullscreen>
-        </iframe>
-    </div>
+    <!-- Kendi MP4 Video Arka Plan - Tam ekran, hiçbir UI yok -->
+    <video class="video-bg" autoplay muted loop playsinline>
+        <source src="https://raw.githubusercontent.com/zyntherax/zyntherax.github.io/main/wallpaper.mp4" type="video/mp4">
+    </video>
     <div class="overlay"></div>
 
     <!-- Parçacıklar -->
@@ -333,15 +347,10 @@
     <div class="cursor" id="cursor"></div>
     <div class="cursor-dot" id="cursorDot"></div>
 
-    <!-- Uçan yazı container -->
-    <div id="flyingContainer"></div>
-
     <!-- Ana içerik -->
     <div class="container">
-        <!-- Sabit başlık -->
-        <div class="title-container">
-            <h1 class="title" id="mainTitle">zyntherax</h1>
-        </div>
+        <!-- Profilimin üstünde - beyaz glow + titreme + yazılıp silinme -->
+        <h1 class="title">zyntherax</h1>
 
         <!-- Roblox logosu -->
         <a href="https://www.roblox.com/tr/users/1582566009/profile" 
@@ -363,118 +372,6 @@
     </div>
 
     <script>
-        const titleText = "zyntherax";
-        const flyingContainer = document.getElementById('flyingContainer');
-        const mainTitle = document.getElementById('mainTitle');
-
-        // Rastgele pozisyon - ekranın görünür alanında
-        function getRandomPosition() {
-            const padding = 100;
-            const x = padding + Math.random() * (window.innerWidth - padding * 2 - 200);
-            const y = padding + Math.random() * (window.innerHeight - padding * 2 - 50);
-            return { x, y };
-        }
-
-        // Yazıyı rastgele yerde göster, sonra sil, başka yerde göster
-        function textAppearAnimation() {
-            const positions = [
-                { x: window.innerWidth / 2 - 150, y: 100 },
-                { x: 50, y: window.innerHeight / 2 - 25 },
-                { x: window.innerWidth - 350, y: window.innerHeight / 2 - 25 },
-                { x: window.innerWidth / 2 - 150, y: window.innerHeight - 150 },
-                { x: 100, y: 100 },
-                { x: window.innerWidth - 300, y: 100 },
-                { x: 100, y: window.innerHeight - 150 },
-                { x: window.innerWidth - 300, y: window.innerHeight - 150 }
-            ];
-
-            let currentPos = 0;
-
-            function showNext() {
-                // Önceki yazıyı temizle
-                flyingContainer.innerHTML = '';
-
-                // Ana başlığı gizle
-                mainTitle.classList.remove('visible');
-
-                const span = document.createElement('span');
-                span.className = 'flying-text';
-                span.textContent = titleText;
-
-                const pos = positions[currentPos % positions.length];
-                span.style.left = pos.x + 'px';
-                span.style.top = pos.y + 'px';
-                span.style.opacity = '0';
-                span.style.transform = 'scale(0.5)';
-
-                flyingContainer.appendChild(span);
-
-                // Belirme animasyonu
-                let opacity = 0;
-                let scale = 0.5;
-                const appearDuration = 500;
-                const startTime = Date.now();
-
-                function appear() {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min(elapsed / appearDuration, 1);
-
-                    opacity = progress;
-                    scale = 0.5 + (progress * 0.5);
-
-                    span.style.opacity = opacity;
-                    span.style.transform = `scale(${scale})`;
-
-                    if (progress < 1) {
-                        requestAnimationFrame(appear);
-                    } else {
-                        // 1 saniye bekle
-                        setTimeout(() => {
-                            // Silinme animasyonu
-                            let fadeOpacity = 1;
-                            const fadeStart = Date.now();
-
-                            function fade() {
-                                const fadeElapsed = Date.now() - fadeStart;
-                                const fadeProgress = Math.min(fadeElapsed / 400, 1);
-
-                                fadeOpacity = 1 - fadeProgress;
-                                span.style.opacity = fadeOpacity;
-                                span.style.transform = `scale(${1 + fadeProgress * 0.3})`;
-
-                                if (fadeProgress < 1) {
-                                    requestAnimationFrame(fade);
-                                } else {
-                                    span.remove();
-                                    currentPos++;
-
-                                    // 3 pozisyon sonra ana başlığı göster
-                                    if (currentPos % 3 === 0 && currentPos > 0) {
-                                        mainTitle.classList.add('visible');
-                                        setTimeout(() => {
-                                            mainTitle.classList.remove('visible');
-                                            setTimeout(showNext, 500);
-                                        }, 2000);
-                                    } else {
-                                        setTimeout(showNext, 300);
-                                    }
-                                }
-                            }
-                            requestAnimationFrame(fade);
-                        }, 1000);
-                    }
-                }
-                requestAnimationFrame(appear);
-            }
-
-            showNext();
-        }
-
-        // Sayfa açıldığında başlat
-        window.addEventListener('load', () => {
-            setTimeout(textAppearAnimation, 500);
-        });
-
         // Parçacık oluştur
         function createParticles() {
             const container = document.getElementById('particles');
