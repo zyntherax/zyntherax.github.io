@@ -156,93 +156,95 @@
             justify-content: center;
         }
 
-        /* Süzülen harfler - Profilin üstünde başlayıp yerini alacak */
-        .floating-letter {
-            position: absolute;
+        /* Neon yazı efekti */
+        .title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
+            font-size: 48px;
             font-weight: 700;
             color: #fff;
-            text-transform: uppercase;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 10;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            will-change: transform, opacity;
-            letter-spacing: 2px;
-        }
-
-        @keyframes letterSway {
-            0% {
-                opacity: 0;
-                transform: translateY(-30px) translateX(0) rotate(-5deg);
-            }
-            20% {
-                opacity: 1;
-                transform: translateY(0) translateX(10px) rotate(3deg);
-            }
-            40% {
-                transform: translateY(-10px) translateX(-5px) rotate(-2deg);
-            }
-            60% {
-                transform: translateY(5px) translateX(8px) rotate(4deg);
-            }
-            80% {
-                transform: translateY(-3px) translateX(-3px) rotate(-1deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) translateX(0) rotate(0deg);
-            }
-        }
-
-        @keyframes letterSettle {
-            0% {
-                opacity: 1;
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) rotate(0deg);
-            }
-        }
-
-        /* Başlık container */
-        .title-container {
             margin-bottom: 20px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            width: 100%;
-        }
-
-        .title-letter {
-            display: inline-block;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 2px;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            opacity: 0;
-            transition: all 0.3s ease;
             position: relative;
+            animation: neonFlicker 3s ease-in-out infinite;
         }
 
-        .title-letter.visible {
-            opacity: 1;
+        @keyframes neonFlicker {
+            0%, 100% {
+                text-shadow: 
+                    0 0 7px #fff,
+                    0 0 10px #fff,
+                    0 0 21px #fff,
+                    0 0 42px #7000ff,
+                    0 0 82px #7000ff,
+                    0 0 92px #7000ff,
+                    0 0 102px #7000ff,
+                    0 0 151px #7000ff;
+                opacity: 1;
+            }
+            50% {
+                text-shadow: 
+                    0 0 7px #fff,
+                    0 0 10px #fff,
+                    0 0 21px #fff,
+                    0 0 42px #ff00ff,
+                    0 0 82px #ff00ff,
+                    0 0 92px #ff00ff,
+                    0 0 102px #ff00ff,
+                    0 0 151px #ff00ff;
+                opacity: 0.9;
+            }
         }
 
-        /* Başlık silinip geri gelme */
-        @keyframes titleFadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; filter: blur(10px); }
+        /* Glitch efekti */
+        .title::before,
+        .title::after {
+            content: 'zyntherax';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
         }
 
-        @keyframes titleFadeIn {
-            0% { opacity: 0; filter: blur(10px); }
+        .title::before {
+            color: #ff0000;
+            animation: glitch1 2s infinite linear alternate-reverse;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+
+        .title::after {
+            color: #00ffff;
+            animation: glitch2 3s infinite linear alternate-reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch1 {
+            0%, 90% { opacity: 0; transform: translate(0); }
+            92% { opacity: 0.8; transform: translate(-3px, 2px); }
+            94% { opacity: 0; transform: translate(0); }
+            96% { opacity: 0.8; transform: translate(2px, -1px); }
+            100% { opacity: 0; transform: translate(0); }
+        }
+
+        @keyframes glitch2 {
+            0%, 85% { opacity: 0; transform: translate(0); }
+            87% { opacity: 0.8; transform: translate(3px, -2px); }
+            89% { opacity: 0; transform: translate(0); }
+            91% { opacity: 0.8; transform: translate(-2px, 1px); }
+            100% { opacity: 0; transform: translate(0); }
+        }
+
+        /* Yazı kaybolup geri gelme */
+        .title-container {
+            animation: titleCycle 8s ease-in-out infinite;
+        }
+
+        @keyframes titleCycle {
+            0%, 70% { opacity: 1; filter: blur(0); }
+            80% { opacity: 0; filter: blur(10px); }
+            90% { opacity: 0; filter: blur(10px); }
             100% { opacity: 1; filter: blur(0); }
         }
 
@@ -349,8 +351,7 @@
 
         /* Responsive */
         @media (max-width: 480px) {
-            .floating-letter { font-size: 32px; }
-            .title-letter { font-size: 32px; }
+            .title { font-size: 32px; letter-spacing: 3px; }
             .profile-gif { width: 110px; height: 110px; }
             .roblox-btn { width: 45px; height: 45px; }
             .roblox-icon { width: 24px; height: 24px; }
@@ -378,8 +379,10 @@
 
     <!-- Ana içerik -->
     <div class="container">
-        <!-- Başlık - Harfler süzülerek geliyor -->
-        <div class="title-container" id="titleContainer"></div>
+        <!-- Neon glitch başlık - kaybolup geri gelen -->
+        <div class="title-container">
+            <h1 class="title">zyntherax</h1>
+        </div>
 
         <!-- Roblox logosu -->
         <a href="https://www.roblox.com/tr/users/1582566009/profile" 
@@ -401,126 +404,6 @@
     </div>
 
     <script>
-        const titleText = "zyntherax";
-        const titleContainer = document.getElementById('titleContainer');
-
-        // Başlık harflerini oluştur (başlangıçta gizli)
-        function createTitleLetters() {
-            titleContainer.innerHTML = '';
-            const letters = titleText.split('');
-            letters.forEach((char) => {
-                const span = document.createElement('span');
-                span.className = 'title-letter';
-                span.textContent = char;
-                titleContainer.appendChild(span);
-            });
-        }
-        createTitleLetters();
-
-        // Harfleri süzülerek göster
-        function animateLettersIn() {
-            const letters = document.querySelectorAll('.title-letter');
-            const containerRect = titleContainer.getBoundingClientRect();
-            const containerCenterX = containerRect.left + containerRect.width / 2;
-            const containerTopY = containerRect.top;
-
-            // Her harf için süzülme animasyonu
-            letters.forEach((letter, index) => {
-                // Harfi geçici olarak absolute pozisyona al
-                letter.style.position = 'fixed';
-                letter.style.opacity = '0';
-                letter.style.zIndex = '100';
-
-                // Başlangıç pozisyonu - profilin üstünden başlayıp hafifçe sallanarak
-                const startX = containerCenterX - (titleText.length * 12) + (index * 24);
-                const startY = containerTopY - 80;
-
-                letter.style.left = startX + 'px';
-                letter.style.top = startY + 'px';
-
-                // Süzülme animasyonu - yaprak gibi sallanarak
-                setTimeout(() => {
-                    letter.style.transition = 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                    letter.style.opacity = '1';
-
-                    // Hedef pozisyon
-                    const targetX = containerCenterX - (titleText.length * 12) + (index * 24);
-                    const targetY = containerTopY + 10;
-
-                    // Yaprak gibi sallanarak ilerleme
-                    let progress = 0;
-                    const duration = 1500;
-                    const startTime = Date.now();
-
-                    function sway() {
-                        const elapsed = Date.now() - startTime;
-                        progress = Math.min(elapsed / duration, 1);
-
-                        // Ease out
-                        const ease = 1 - Math.pow(1 - progress, 3);
-
-                        // Yaprak gibi sallanma
-                        const swayX = Math.sin(progress * Math.PI * 3) * 15 * (1 - progress);
-                        const swayY = Math.sin(progress * Math.PI * 2) * 10 * (1 - progress);
-
-                        const currentX = startX + (targetX - startX) * ease + swayX;
-                        const currentY = startY + (targetY - startY) * ease + swayY;
-                        const rotation = Math.sin(progress * Math.PI * 4) * 10 * (1 - progress);
-
-                        letter.style.left = currentX + 'px';
-                        letter.style.top = currentY + 'px';
-                        letter.style.transform = `rotate(${rotation}deg)`;
-
-                        if (progress < 1) {
-                            requestAnimationFrame(sway);
-                        } else {
-                            // Animasyon bitti - yerine yerleştir
-                            letter.style.position = 'relative';
-                            letter.style.left = 'auto';
-                            letter.style.top = 'auto';
-                            letter.style.transform = 'none';
-                            letter.classList.add('visible');
-                        }
-                    }
-
-                    requestAnimationFrame(sway);
-                }, index * 200);
-            });
-
-            // Tüm harfler yerleştikten sonra silinip geri gelme döngüsü
-            setTimeout(() => {
-                startDisappearCycle();
-            }, 4000);
-        }
-
-        // Harfleri silip geri getir
-        function startDisappearCycle() {
-            const letters = document.querySelectorAll('.title-letter');
-
-            // Önce sil
-            letters.forEach((letter, index) => {
-                setTimeout(() => {
-                    letter.style.transition = 'all 0.5s ease';
-                    letter.style.opacity = '0';
-                    letter.style.transform = 'translateY(-20px) scale(0.8)';
-                }, index * 50);
-            });
-
-            // Sonra geri getir
-            setTimeout(() => {
-                letters.forEach(letter => {
-                    letter.classList.remove('visible');
-                    letter.style.transform = 'none';
-                });
-                animateLettersIn();
-            }, 2000);
-        }
-
-        // Sayfa açıldığında başlat
-        window.addEventListener('load', () => {
-            setTimeout(animateLettersIn, 300);
-        });
-
         // Parçacık oluştur
         function createParticles() {
             const container = document.getElementById('particles');
