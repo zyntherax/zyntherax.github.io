@@ -24,96 +24,37 @@
             background: #000;
         }
 
-        /* Animasyonlu arka plan */
-        .bg-animation {
+        /* YouTube Video Arka Plan */
+        .video-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: linear-gradient(-45deg, #0a0a0a, #1a0a2e, #16213e, #0f0f23, #1a1a2e);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Hareketli grid */
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(120, 50, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(120, 50, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
-        }
-
-        /* Yüzen ışıklar */
-        .lights {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
         }
 
-        .light {
+        .video-container iframe {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.4;
-            animation: lightFloat 8s ease-in-out infinite;
-        }
-
-        .light:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            background: rgba(120, 50, 255, 0.3);
-            top: 10%;
-            left: 20%;
-            animation-delay: 0s;
-        }
-
-        .light:nth-child(2) {
-            width: 250px;
-            height: 250px;
-            background: rgba(255, 50, 150, 0.2);
-            top: 60%;
-            right: 20%;
-            animation-delay: -2s;
-        }
-
-        .light:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            background: rgba(50, 150, 255, 0.2);
-            bottom: 20%;
+            top: 50%;
             left: 50%;
-            animation-delay: -4s;
+            width: 100vw;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            min-width: 177.77vh;
+            min-height: 56.25vw;
         }
 
-        @keyframes lightFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
+        /* Karanlık overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
         }
 
         /* Parçacıklar */
@@ -131,25 +72,25 @@
             position: absolute;
             width: 2px;
             height: 2px;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
             animation: particleFloat linear infinite;
+            will-change: transform, opacity;
         }
 
         @keyframes particleFloat {
             0% {
-                transform: translateY(100vh) translateX(0) scale(0);
+                transform: translateY(100vh) translateX(0);
                 opacity: 0;
             }
-            10% {
-                opacity: 1;
-                transform: scale(1);
+            5% {
+                opacity: 0.6;
             }
-            90% {
-                opacity: 1;
+            95% {
+                opacity: 0.6;
             }
             100% {
-                transform: translateY(-10vh) translateX(100px) scale(0);
+                transform: translateY(-10vh) translateX(80px);
                 opacity: 0;
             }
         }
@@ -163,25 +104,27 @@
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
+            transition: transform 0.08s ease-out, width 0.2s ease, height 0.2s ease;
             transform: translate(-50%, -50%);
             mix-blend-mode: difference;
+            will-change: transform;
         }
 
         .cursor-dot {
             position: fixed;
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             background: #fff;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
+            will-change: transform;
         }
 
         .cursor.hover {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-color: rgba(120, 50, 255, 0.8);
             background: rgba(120, 50, 255, 0.1);
         }
@@ -189,14 +132,15 @@
         /* Mouse trail */
         .trail {
             position: fixed;
-            width: 8px;
-            height: 8px;
-            background: rgba(120, 50, 255, 0.4);
+            width: 6px;
+            height: 6px;
+            background: rgba(120, 50, 255, 0.5);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            animation: trailFade 0.8s ease-out forwards;
+            animation: trailFade 0.6s ease-out forwards;
+            will-change: transform, opacity;
         }
 
         @keyframes trailFade {
@@ -209,13 +153,13 @@
             position: relative;
             z-index: 1;
             text-align: center;
-            animation: fadeInUp 1.5s ease-out;
+            animation: fadeInUp 1.2s ease-out;
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -223,29 +167,17 @@
             }
         }
 
-        /* Başlık animasyonu */
+        /* Başlık */
         .title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 52px;
+            font-size: 56px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 40px;
-            letter-spacing: 4px;
+            margin-bottom: 35px;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            animation: titleGlow 3s ease-in-out infinite;
-            position: relative;
-        }
-
-        .title::before {
-            content: 'zyntherax';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(120, 50, 255, 0.3);
-            animation: titleGlitch 4s infinite;
+            animation: titleGlow 4s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(120, 50, 255, 0.4);
         }
 
         @keyframes titleGlow {
@@ -261,32 +193,29 @@
             }
         }
 
-        @keyframes titleGlitch {
-            0%, 90%, 100% { transform: translate(0); opacity: 0; }
-            92% { transform: translate(-3px, 2px); opacity: 0.5; }
-            94% { transform: translate(3px, -2px); opacity: 0.5; }
-            96% { transform: translate(0); opacity: 0; }
-        }
-
-        /* Profil GIF */
+        /* Profil GIF - 60fps smooth */
         .profile-gif {
-            width: 180px;
-            height: 180px;
+            width: 170px;
+            height: 170px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid transparent;
             background: linear-gradient(#000, #000) padding-box,
                         linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5) border-box;
             background-size: 400% 400%;
-            animation: borderRotate 3s linear infinite;
+            animation: borderRotate 4s linear infinite;
             margin-bottom: 30px;
-            box-shadow: 0 0 40px rgba(120, 50, 255, 0.3);
+            box-shadow: 0 0 50px rgba(120, 50, 255, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform;
+            /* GPU acceleration for smooth GIF */
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         .profile-gif:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 60px rgba(120, 50, 255, 0.5);
+            transform: scale(1.08) translateZ(0);
+            box-shadow: 0 0 70px rgba(120, 50, 255, 0.5);
         }
 
         @keyframes borderRotate {
@@ -299,20 +228,22 @@
         .roblox-btn {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px 32px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            gap: 10px;
+            padding: 16px 36px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
             color: #fff;
             text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(10px);
+            font-size: 17px;
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
             position: relative;
             overflow: hidden;
-            animation: fadeInUp 2s ease-out 0.5s both;
+            animation: fadeInUp 1.5s ease-out 0.3s both;
         }
 
         .roblox-btn::before {
@@ -322,8 +253,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s ease;
         }
 
         .roblox-btn:hover::before {
@@ -331,43 +262,44 @@
         }
 
         .roblox-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.6);
             border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-3px);
-            box-shadow: 0 10px 40px rgba(120, 50, 255, 0.2);
-        }
-
-        .roblox-icon {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            letter-spacing: 2px;
         }
 
         /* Alt yazı */
         .subtitle {
-            margin-top: 20px;
+            margin-top: 18px;
             font-size: 13px;
-            color: #666;
-            animation: fadeInUp 2s ease-out 1s both;
+            color: #777;
+            letter-spacing: 2px;
+            animation: fadeInUp 1.8s ease-out 0.6s both;
         }
 
         /* Responsive */
         @media (max-width: 480px) {
-            .title { font-size: 36px; }
-            .profile-gif { width: 140px; height: 140px; }
+            .title { font-size: 38px; letter-spacing: 3px; }
+            .profile-gif { width: 130px; height: 130px; }
+            .roblox-btn { padding: 14px 28px; font-size: 15px; }
         }
     </style>
 <base target="_blank">
 </head>
 <body>
-    <!-- Animasyonlu arka planlar -->
-    <div class="bg-animation"></div>
-    <div class="grid-overlay"></div>
-    <div class="lights">
-        <div class="light"></div>
-        <div class="light"></div>
-        <div class="light"></div>
+    <!-- YouTube Video Arka Plan -->
+    <div class="video-container">
+        <iframe 
+            src="https://www.youtube.com/embed/9y4UGT0GW6Y?autoplay=1&mute=1&loop=1&playlist=9y4UGT0GW6Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&vq=hd1080"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
     </div>
+    <div class="overlay"></div>
+
+    <!-- Parçacıklar -->
     <div class="particles" id="particles"></div>
 
     <!-- Özel mouse imleci -->
@@ -376,51 +308,48 @@
 
     <!-- Ana içerik -->
     <div class="container">
-        <!-- Başlık -->
         <h1 class="title">zyntherax</h1>
 
-        <!-- Profil GIF -->
         <img src="https://i.pinimg.com/originals/87/8c/53/878c5376b10b2f842a06fae2d386c463.gif" 
              alt="profile" 
              class="profile-gif">
 
-        <!-- Roblox Butonu -->
         <a href="https://www.roblox.com/tr/users/1582566009/profile" 
            class="roblox-btn" 
            target="_blank">
-            <svg class="roblox-icon" viewBox="0 0 24 24">
-                <path d="M18.926 23.998 0 18.894 5.075.002 24 5.108l-5.074 18.89Zm-5.762-16.03L6.002 6.58l1.667 6.26 7.162 1.9-1.666-6.771Z"/>
-            </svg>
-            Roblox Profilim
+            Roblox
         </a>
 
         <p class="subtitle">currently doing nothing</p>
     </div>
 
     <script>
-        // Parçacık oluştur
+        // Parçacık oluştur - optimize
         function createParticles() {
             const container = document.getElementById('particles');
-            for (let i = 0; i < 80; i++) {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < 60; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                const size = Math.random() * 3 + 1;
+                particle.style.animationDuration = (Math.random() * 12 + 8) + 's';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                const size = Math.random() * 2 + 1;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
-                particle.style.opacity = Math.random() * 0.5 + 0.2;
-                container.appendChild(particle);
+                particle.style.opacity = Math.random() * 0.4 + 0.2;
+                fragment.appendChild(particle);
             }
+            container.appendChild(fragment);
         }
         createParticles();
 
-        // Özel mouse imleci
+        // Özel mouse imleci - 60fps smooth
         const cursor = document.getElementById('cursor');
         const cursorDot = document.getElementById('cursorDot');
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
+        let trailCounter = 0;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -428,20 +357,21 @@
             cursorDot.style.left = mouseX + 'px';
             cursorDot.style.top = mouseY + 'px';
 
-            // Trail efekti
-            if (Math.random() > 0.8) {
+            // Trail efekti - optimize
+            trailCounter++;
+            if (trailCounter % 3 === 0) {
                 const trail = document.createElement('div');
                 trail.className = 'trail';
                 trail.style.left = mouseX + 'px';
                 trail.style.top = mouseY + 'px';
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 800);
+                setTimeout(() => trail.remove(), 600);
             }
         });
 
         function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
+            cursorX += (mouseX - cursorX) * 0.12;
+            cursorY += (mouseY - cursorY) * 0.12;
             cursor.style.left = cursorX + 'px';
             cursor.style.top = cursorY + 'px';
             requestAnimationFrame(animateCursor);
@@ -452,25 +382,6 @@
         document.querySelectorAll('a, .profile-gif').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
-
-        // Başlık glitch efekti
-        const title = document.querySelector('.title');
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-        title.addEventListener('mouseenter', () => {
-            const originalText = title.textContent;
-            let iterations = 0;
-            const interval = setInterval(() => {
-                title.textContent = originalText.split('')
-                    .map((char, index) => {
-                        if (index < iterations) return originalText[index];
-                        return chars[Math.floor(Math.random() * chars.length)];
-                    })
-                    .join('');
-                if (iterations >= originalText.length) clearInterval(interval);
-                iterations += 1/2;
-            }, 30);
         });
     </script>
 </body>
