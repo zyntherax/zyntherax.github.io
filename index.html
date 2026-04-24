@@ -329,11 +329,11 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* ===== CEREN CICEGI ===== */
+        /* ===== CEREN CICEGI - YENI TASARIM ===== */
         .flower-wrapper {
             position: relative;
-            width: 120px; height: 120px;
-            margin-top: 10px;
+            width: 160px; height: 160px;
+            margin-top: 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -342,128 +342,219 @@
 
         .flower {
             position: relative;
-            width: 80px; height: 80px;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 110px; height: 110px;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 0 20px rgba(255, 0, 110, 0.5));
         }
 
-        .flower-wrapper:hover .flower { transform: scale(1.15); }
+        .flower-wrapper:hover .flower {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 35px rgba(255, 0, 110, 0.8));
+        }
+
         .flower-wrapper:active .flower { transform: scale(0.95); }
 
+        /* Yapraklar - 3D katmanli gul */
         .petal {
             position: absolute;
-            width: 28px; height: 44px;
-            background: linear-gradient(180deg, #ff6b9d 0%, #c44569 50%, #8b2f5c 100%);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            width: 38px;
+            height: 58px;
+            background: linear-gradient(180deg,
+                rgba(255, 20, 147, 0.95) 0%,
+                rgba(255, 0, 80, 0.9) 30%,
+                rgba(139, 0, 60, 0.85) 70%,
+                rgba(80, 0, 40, 0.9) 100%);
+            border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
             top: 50%; left: 50%;
             transform-origin: center bottom;
-            box-shadow: 0 0 15px rgba(255, 107, 157, 0.4);
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow:
+                0 0 20px rgba(255, 20, 147, 0.6),
+                0 0 40px rgba(255, 0, 80, 0.3),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(255, 150, 200, 0.3);
         }
 
-        .petal:nth-child(1) { transform: translate(-50%, -100%) rotate(0deg); }
-        .petal:nth-child(2) { transform: translate(-50%, -100%) rotate(72deg); }
-        .petal:nth-child(3) { transform: translate(-50%, -100%) rotate(144deg); }
-        .petal:nth-child(4) { transform: translate(-50%, -100%) rotate(216deg); }
-        .petal:nth-child(5) { transform: translate(-50%, -100%) rotate(288deg); }
+        /* Dis katman yapraklar */
+        .petal:nth-child(1) { transform: translate(-50%, -100%) rotate(0deg); z-index: 1; }
+        .petal:nth-child(2) { transform: translate(-50%, -100%) rotate(60deg); z-index: 1; }
+        .petal:nth-child(3) { transform: translate(-50%, -100%) rotate(120deg); z-index: 1; }
+        .petal:nth-child(4) { transform: translate(-50%, -100%) rotate(180deg); z-index: 1; }
+        .petal:nth-child(5) { transform: translate(-50%, -100%) rotate(240deg); z-index: 1; }
+        .petal:nth-child(6) { transform: translate(-50%, -100%) rotate(300deg); z-index: 1; }
 
-        .flower-wrapper.opened .petal:nth-child(1) { transform: translate(-50%, -105%) rotate(-15deg) scale(1.1); }
-        .flower-wrapper.opened .petal:nth-child(2) { transform: translate(-50%, -105%) rotate(57deg) scale(1.1); }
-        .flower-wrapper.opened .petal:nth-child(3) { transform: translate(-50%, -105%) rotate(129deg) scale(1.1); }
-        .flower-wrapper.opened .petal:nth-child(4) { transform: translate(-50%, -105%) rotate(201deg) scale(1.1); }
-        .flower-wrapper.opened .petal:nth-child(5) { transform: translate(-50%, -105%) rotate(273deg) scale(1.1); }
+        /* Ic katman yapraklar */
+        .petal:nth-child(7) { transform: translate(-50%, -95%) rotate(30deg) scale(0.75); z-index: 2; opacity: 0.9; }
+        .petal:nth-child(8) { transform: translate(-50%, -95%) rotate(90deg) scale(0.75); z-index: 2; opacity: 0.9; }
+        .petal:nth-child(9) { transform: translate(-50%, -95%) rotate(150deg) scale(0.75); z-index: 2; opacity: 0.9; }
+        .petal:nth-child(10) { transform: translate(-50%, -95%) rotate(210deg) scale(0.75); z-index: 2; opacity: 0.9; }
+        .petal:nth-child(11) { transform: translate(-50%, -95%) rotate(270deg) scale(0.75); z-index: 2; opacity: 0.9; }
+        .petal:nth-child(12) { transform: translate(-50%, -95%) rotate(330deg) scale(0.75); z-index: 2; opacity: 0.9; }
 
+        /* Acilis animasyonu - dis katman */
+        .flower-wrapper.opened .petal:nth-child(1) { transform: translate(-50%, -108%) rotate(-20deg) scale(1.15); }
+        .flower-wrapper.opened .petal:nth-child(2) { transform: translate(-50%, -108%) rotate(40deg) scale(1.15); }
+        .flower-wrapper.opened .petal:nth-child(3) { transform: translate(-50%, -108%) rotate(100deg) scale(1.15); }
+        .flower-wrapper.opened .petal:nth-child(4) { transform: translate(-50%, -108%) rotate(160deg) scale(1.15); }
+        .flower-wrapper.opened .petal:nth-child(5) { transform: translate(-50%, -108%) rotate(220deg) scale(1.15); }
+        .flower-wrapper.opened .petal:nth-child(6) { transform: translate(-50%, -108%) rotate(280deg) scale(1.15); }
+
+        /* Acilis animasyonu - ic katman */
+        .flower-wrapper.opened .petal:nth-child(7) { transform: translate(-50%, -102%) rotate(10deg) scale(0.9); }
+        .flower-wrapper.opened .petal:nth-child(8) { transform: translate(-50%, -102%) rotate(70deg) scale(0.9); }
+        .flower-wrapper.opened .petal:nth-child(9) { transform: translate(-50%, -102%) rotate(130deg) scale(0.9); }
+        .flower-wrapper.opened .petal:nth-child(10) { transform: translate(-50%, -102%) rotate(190deg) scale(0.9); }
+        .flower-wrapper.opened .petal:nth-child(11) { transform: translate(-50%, -102%) rotate(250deg) scale(0.9); }
+        .flower-wrapper.opened .petal:nth-child(12) { transform: translate(-50%, -102%) rotate(310deg) scale(0.9); }
+
+        /* Cicek merkezi - 3D efekt */
         .flower-center {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 32px; height: 32px;
-            background: radial-gradient(circle, #ffd700 0%, #ff8c00 70%, #cc6600 100%);
+            width: 40px; height: 40px;
+            background: radial-gradient(circle at 30% 30%,
+                #ffeb3b 0%,
+                #ffc107 30%,
+                #ff9800 60%,
+                #e65100 100%);
             border-radius: 50%;
-            z-index: 2;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), inset 0 -3px 8px rgba(0,0,0,0.3);
-            transition: all 0.5s ease;
+            z-index: 3;
+            box-shadow:
+                0 0 30px rgba(255, 193, 7, 0.8),
+                0 0 60px rgba(255, 152, 0, 0.4),
+                inset 0 -5px 10px rgba(0, 0, 0, 0.4),
+                inset 0 3px 8px rgba(255, 255, 255, 0.4);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .flower-wrapper.opened .flower-center {
-            transform: translate(-50%, -50%) scale(0.6);
-            opacity: 0.8;
+            transform: translate(-50%, -50%) scale(0.7);
+            box-shadow:
+                0 0 50px rgba(255, 193, 7, 1),
+                0 0 100px rgba(255, 152, 0, 0.6),
+                inset 0 -5px 10px rgba(0, 0, 0, 0.4);
         }
 
+        /* Ceren yazisi */
         .flower-text {
             position: absolute;
             top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0);
+            transform: translate(-50%, -50%) scale(0) rotate(-10deg);
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             color: #fff;
             white-space: nowrap;
-            z-index: 3;
+            z-index: 4;
             opacity: 0;
-            text-shadow: 0 0 10px rgba(255, 107, 157, 0.9), 0 0 30px rgba(255, 107, 157, 0.6), 0 0 60px rgba(255, 107, 157, 0.4);
+            text-shadow:
+                0 0 10px rgba(255, 20, 147, 1),
+                0 0 30px rgba(255, 0, 80, 0.8),
+                0 0 60px rgba(255, 0, 80, 0.5),
+                0 0 100px rgba(255, 20, 147, 0.3);
             pointer-events: none;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            letter-spacing: 2px;
         }
 
         .flower-wrapper.opened .flower-text {
-            transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
             opacity: 1;
         }
 
+        /* Sallanma animasyonu */
         @keyframes flowerSway {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
+            0%, 100% { transform: rotate(-4deg) translateY(0); }
+            25% { transform: rotate(2deg) translateY(-3px); }
+            50% { transform: rotate(4deg) translateY(0); }
+            75% { transform: rotate(-2deg) translateY(-2px); }
         }
 
         .flower-wrapper:not(.opened) .flower {
-            animation: flowerSway 3s ease-in-out infinite;
+            animation: flowerSway 4s ease-in-out infinite;
             transform-origin: center bottom;
         }
 
+        /* Parilti efekti */
         .flower-glow {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             width: 0; height: 0;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 107, 157, 0.6) 0%, transparent 70%);
+            background: radial-gradient(circle,
+                rgba(255, 20, 147, 0.7) 0%,
+                rgba(255, 0, 80, 0.4) 30%,
+                transparent 70%);
             opacity: 0;
-            transition: all 0.8s ease;
+            transition: all 1s ease;
             pointer-events: none;
             z-index: 0;
         }
 
         .flower-wrapper.opened .flower-glow {
-            width: 200px; height: 200px;
+            width: 280px; height: 280px;
             opacity: 1;
         }
 
+        /* Neon halka */
+        .flower-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: linear-gradient(#000, #000) padding-box,
+                        linear-gradient(45deg, #ff006e, #ff1493, #ff69b4) border-box;
+            opacity: 0;
+            transition: all 0.8s ease;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .flower-wrapper.opened .flower-ring {
+            opacity: 0.6;
+            width: 200px; height: 200px;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+        }
+
+        /* Kalp parcaciklari */
         .heart-particle {
             position: absolute;
-            font-size: 14px;
+            font-size: 16px;
             pointer-events: none;
             z-index: 10;
-            animation: heartFloat 1.5s ease-out forwards;
+            animation: heartFloat 2s ease-out forwards;
+            filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.8));
         }
 
         @keyframes heartFloat {
             0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 1; }
-            50% { opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(var(--rot)); opacity: 0; }
+            20% { transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(var(--rot)); opacity: 1; }
+            100% { transform: translate(calc(var(--tx) * 1.5), calc(var(--ty) * 1.5 - 50px)) scale(0) rotate(calc(var(--rot) * 2)); opacity: 0; }
         }
 
+        /* Ipucu yazisi */
         .flower-hint {
             position: absolute;
-            bottom: -25px; left: 50%;
+            bottom: -30px; left: 50%;
             transform: translateX(-50%);
             font-size: 10px;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 3px;
             text-transform: uppercase;
             white-space: nowrap;
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
         }
 
         .flower-wrapper:hover .flower-hint { opacity: 1; }
@@ -474,11 +565,11 @@
             .profile-gif { width: 110px; height: 110px; }
             .roblox-btn { width: 45px; height: 45px; }
             .roblox-icon { width: 24px; height: 24px; }
-            .flower-wrapper { width: 100px; height: 100px; }
-            .flower { width: 65px; height: 65px; }
-            .petal { width: 22px; height: 36px; }
-            .flower-center { width: 26px; height: 26px; }
-            .flower-text { font-size: 12px; }
+            .flower-wrapper { width: 130px; height: 130px; }
+            .flower { width: 85px; height: 85px; }
+            .petal { width: 30px; height: 46px; }
+            .flower-center { width: 32px; height: 32px; }
+            .flower-text { font-size: 13px; }
         }
     </style>
 <base target="_blank">
@@ -525,10 +616,20 @@
                  class="roblox-icon">
         </a>
 
-        <!-- Ceren Cicegi -->
+        <!-- Ceren Cicegi - Yeni 3D Gul Tasarimi -->
         <div class="flower-wrapper" id="cerenFlower">
             <div class="flower-glow"></div>
+            <div class="flower-ring"></div>
             <div class="flower">
+                <!-- Dis katman yapraklar -->
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <!-- Ic katman yapraklar -->
+                <div class="petal"></div>
                 <div class="petal"></div>
                 <div class="petal"></div>
                 <div class="petal"></div>
@@ -679,24 +780,25 @@
         });
 
         function createHeartBurst(x, y) {
-            const hearts = ['💕', '💖', '💗', '💓', '💝', '❤️', '💘'];
-            for (let i = 0; i < 12; i++) {
+            const hearts = ['💕', '💖', '💗', '💓', '💝', '❤️', '💘', '🌹', '✨'];
+            for (let i = 0; i < 20; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart-particle';
                 heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                const angle = (Math.PI * 2 * i) / 12;
-                const distance = 60 + Math.random() * 80;
+                const angle = (Math.PI * 2 * i) / 20;
+                const distance = 80 + Math.random() * 100;
                 const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance - 40;
-                const rot = (Math.random() - 0.5) * 60;
+                const ty = Math.sin(angle) * distance - 60;
+                const rot = (Math.random() - 0.5) * 90;
                 heart.style.left = x + 'px';
                 heart.style.top = y + 'px';
                 heart.style.setProperty('--tx', tx + 'px');
                 heart.style.setProperty('--ty', ty + 'px');
                 heart.style.setProperty('--rot', rot + 'deg');
-                heart.style.animationDelay = (Math.random() * 0.2) + 's';
+                heart.style.animationDelay = (Math.random() * 0.3) + 's';
+                heart.style.fontSize = (14 + Math.random() * 10) + 'px';
                 document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 2000);
+                setTimeout(() => heart.remove(), 2500);
             }
         }
     </script>
