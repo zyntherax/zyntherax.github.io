@@ -34,6 +34,13 @@
             z-index: -3;
             background: radial-gradient(ellipse at center, #0a0a1a 0%, #000 100%);
             overflow: hidden;
+            opacity: 1;
+            transition: opacity 1.5s ease;
+        }
+
+        .fallback-bg.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .gradient-mesh {
@@ -152,11 +159,52 @@
             object-fit: cover;
             z-index: -2;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 2s ease;
+            background: #000;
         }
 
         .video-bg.loaded {
             opacity: 0.9;
+        }
+
+        .video-loading {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .video-loading.active {
+            opacity: 1;
+        }
+
+        .loading-dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: loadingBounce 1.4s ease-in-out infinite;
+        }
+
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes loadingBounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .loading-text {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .overlay {
@@ -456,7 +504,6 @@
             transform: scale(0.95);
         }
 
-        /* Yapraklar */
         .petal {
             position: absolute;
             width: 28px;
@@ -476,14 +523,12 @@
         .petal:nth-child(4) { transform: translate(-50%, -100%) rotate(216deg); }
         .petal:nth-child(5) { transform: translate(-50%, -100%) rotate(288deg); }
 
-        /* Cicek acilis animasyonu */
         .flower-wrapper.opened .petal:nth-child(1) { transform: translate(-50%, -105%) rotate(-15deg) scale(1.1); }
         .flower-wrapper.opened .petal:nth-child(2) { transform: translate(-50%, -105%) rotate(57deg) scale(1.1); }
         .flower-wrapper.opened .petal:nth-child(3) { transform: translate(-50%, -105%) rotate(129deg) scale(1.1); }
         .flower-wrapper.opened .petal:nth-child(4) { transform: translate(-50%, -105%) rotate(201deg) scale(1.1); }
         .flower-wrapper.opened .petal:nth-child(5) { transform: translate(-50%, -105%) rotate(273deg) scale(1.1); }
 
-        /* Cicek merkezi */
         .flower-center {
             position: absolute;
             top: 50%;
@@ -503,7 +548,6 @@
             opacity: 0.8;
         }
 
-        /* Ceren yazisi */
         .flower-text {
             position: absolute;
             top: 50%;
@@ -529,7 +573,6 @@
             opacity: 1;
         }
 
-        /* Cicek sallanma animasyonu */
         @keyframes flowerSway {
             0%, 100% { transform: rotate(-3deg); }
             50% { transform: rotate(3deg); }
@@ -540,7 +583,6 @@
             transform-origin: center bottom;
         }
 
-        /* Parilti efekti */
         .flower-glow {
             position: absolute;
             top: 50%;
@@ -562,7 +604,6 @@
             opacity: 1;
         }
 
-        /* Kalp parcaciklari */
         .heart-particle {
             position: absolute;
             font-size: 14px;
@@ -585,7 +626,6 @@
             }
         }
 
-        /* Ipucu yazisi */
         .flower-hint {
             position: absolute;
             bottom: -25px;
@@ -616,6 +656,7 @@
             .petal { width: 22px; height: 36px; }
             .flower-center { width: 26px; height: 26px; }
             .flower-text { font-size: 12px; }
+            .video-loading { top: 10px; right: 10px; }
         }
     </style>
 </head>
@@ -631,8 +672,17 @@
         <div id="starsContainer"></div>
     </div>
 
-    <!-- Video Arka Plan -->
-    <video class="video-bg" id="videoBg" autoplay muted loop playsinline>
+    <!-- Video Yükleniyor İndikatörü -->
+    <div class="video-loading" id="videoLoading">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <span class="loading-text">Video</span>
+    </div>
+
+    <!-- Video Arka Plan - WebM önce (daha hafif), sonra MP4 -->
+    <video class="video-bg" id="videoBg" autoplay muted loop playsinline preload="metadata" poster="">
+        <source src="https://raw.githubusercontent.com/zyntherax/zyntherax.github.io/main/wallpaper.webm" type="video/webm">
         <source src="https://raw.githubusercontent.com/zyntherax/zyntherax.github.io/main/wallpaper.mp4" type="video/mp4">
     </video>
     <div class="overlay"></div>
@@ -648,7 +698,6 @@
     <div class="container">
         <h1 class="title">zyntherax</h1>
 
-        <!-- Profil GIF -->
         <img src="https://i.pinimg.com/originals/87/8c/53/878c5376b10b2f842a06fae2d386c463.gif" 
              alt="profile" 
              class="profile-gif">
@@ -662,7 +711,7 @@
                  class="roblox-icon">
         </a>
 
-        <!-- ===== CEREN CICEGI ===== -->
+        <!-- Ceren Çiçeği -->
         <div class="flower-wrapper" id="cerenFlower">
             <div class="flower-glow"></div>
             <div class="flower">
@@ -679,7 +728,7 @@
     </div>
 
     <script>
-        // ===== YILDIZLAR OLUŞTUR =====
+        // ===== YILDIZLAR =====
         function createStars() {
             const container = document.getElementById('starsContainer');
             const fragment = document.createDocumentFragment();
@@ -699,23 +748,48 @@
         }
         createStars();
 
-        // ===== VIDEO YÜKLENME KONTROLÜ =====
+        // ===== VIDEO YÜKLEME YÖNETİMİ =====
         const video = document.getElementById('videoBg');
         const fallbackBg = document.getElementById('fallbackBg');
+        const videoLoading = document.getElementById('videoLoading');
+        let videoLoaded = false;
 
-        video.addEventListener('loadeddata', function() {
-            video.classList.add('loaded');
-            setTimeout(() => {
-                fallbackBg.style.opacity = '0';
-                fallbackBg.style.transition = 'opacity 1s ease';
-            }, 500);
+        // Yükleniyor göster
+        videoLoading.classList.add('active');
+
+        // Video yeterli veri gelince çalışmaya hazır
+        video.addEventListener('canplay', function() {
+            if (!videoLoaded) {
+                videoLoaded = true;
+                video.classList.add('loaded');
+                videoLoading.classList.remove('active');
+                
+                // Fallback'i yavaşça gizle
+                setTimeout(() => {
+                    fallbackBg.classList.add('hidden');
+                }, 800);
+                
+                // Oynatmayı garantile
+                video.play().catch(e => console.log('Autoplay engellendi:', e));
+            }
         });
 
-        video.addEventListener('error', function() {
-            console.log('Video yüklenemedi, fallback aktif');
+        // Hata durumunda fallback kalıcı olsun
+        video.addEventListener('error', function(e) {
+            console.log('Video yüklenemedi, fallback aktif kalıyor');
+            videoLoading.classList.remove('active');
+            video.style.display = 'none';
         });
 
-        // ===== MOUSE INTERAKTİF EFEKTLER =====
+        // Çok uzun süre yüklenmezse timeout (10 saniye)
+        setTimeout(() => {
+            if (!videoLoaded) {
+                console.log('Video timeout - fallback kullanılıyor');
+                videoLoading.classList.remove('active');
+            }
+        }, 10000);
+
+        // ===== MOUSE EFEKTLERİ =====
         const mouseGlow = document.getElementById('mouseGlow');
         const gradientMesh = document.getElementById('gradientMesh');
         let mouseX = 0, mouseY = 0;
@@ -793,13 +867,12 @@
         }
         animateCursor();
 
-        // Hover efekti
         document.querySelectorAll('a, .profile-gif, .flower-wrapper').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
 
-        // ===== CEREN CICEGI ETKILESIMI =====
+        // ===== CEREN CICEGI =====
         const flower = document.getElementById('cerenFlower');
         let isOpen = false;
 
