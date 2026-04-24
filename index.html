@@ -215,46 +215,16 @@
             }
         }
 
-        /* Profil GIF - Küçültülmüş */
-        .profile-gif {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid transparent;
-            background: linear-gradient(#000, #000) padding-box,
-                        linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5) border-box;
-            background-size: 400% 400%;
-            animation: borderRotate 4s linear infinite;
-            margin-bottom: 20px;
-            box-shadow: 0 0 50px rgba(120, 50, 255, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            will-change: transform;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-
-        .profile-gif:hover {
-            transform: scale(1.08) translateZ(0);
-            box-shadow: 0 0 70px rgba(120, 50, 255, 0.5);
-        }
-
-        @keyframes borderRotate {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Roblox logosu butonu - Profilin az üstünde, küçük */
+        /* Roblox logosu butonu - Profilin az üstünde */
         .roblox-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
+            border-radius: 10px;
             color: #fff;
             text-decoration: none;
             transition: all 0.3s ease;
@@ -297,9 +267,40 @@
         }
 
         .roblox-icon {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+            filter: brightness(1.2);
+        }
+
+        /* Profil GIF - Küçültülmüş */
+        .profile-gif {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid transparent;
+            background: linear-gradient(#000, #000) padding-box,
+                        linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5) border-box;
+            background-size: 400% 400%;
+            animation: borderRotate 4s linear infinite;
+            margin-bottom: 20px;
+            box-shadow: 0 0 50px rgba(120, 50, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .profile-gif:hover {
+            transform: scale(1.08) translateZ(0);
+            box-shadow: 0 0 70px rgba(120, 50, 255, 0.5);
+        }
+
+        @keyframes borderRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* Alt yazı - Animasyonlu */
@@ -320,7 +321,8 @@
         @media (max-width: 480px) {
             .title { font-size: 32px; letter-spacing: 3px; }
             .profile-gif { width: 110px; height: 110px; }
-            .roblox-btn { width: 45px; height: 45px; }
+            .roblox-btn { width: 40px; height: 40px; }
+            .roblox-icon { width: 20px; height: 20px; }
         }
     </style>
 <base target="_blank">
@@ -348,14 +350,14 @@
         <!-- Başlık - silinip tekrar gelen -->
         <h1 class="title">zyntherax</h1>
 
-        <!-- Roblox logosu - Profilin az üstünde, küçük -->
+        <!-- Roblox logosu - Profilin az üstünde -->
         <a href="https://www.roblox.com/tr/users/1582566009/profile" 
            class="roblox-btn" 
            target="_blank"
            title="Roblox Profilim">
-            <svg class="roblox-icon" viewBox="0 0 24 24">
-                <path d="M18.926 23.998 0 18.894 5.075.002 24 5.108l-5.074 18.89Zm-5.762-16.03L6.002 6.58l1.667 6.26 7.162 1.9-1.666-6.771Z"/>
-            </svg>
+            <img src="https://www.citypng.com/public/uploads/preview/hd-roblox-white-symbol-sign-icon-logo-png-701751694787435ra1r2desi8.png" 
+                 alt="Roblox" 
+                 class="roblox-icon">
         </a>
 
         <!-- Profil GIF - Küçültülmüş -->
