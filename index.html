@@ -156,63 +156,51 @@
             justify-content: center;
         }
 
-        /* Rastgele yerlerde beliren harfler */
-        .scramble-letter {
+        /* Uçan yazı - ekranda rastgele belirip kaybolan */
+        .flying-text {
             position: fixed;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 36px;
+            font-size: 48px;
             font-weight: 700;
             color: #fff;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            opacity: 0;
             pointer-events: none;
-            z-index: 10;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
+            z-index: 100;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            opacity: 0;
+            will-change: transform, opacity;
         }
 
-        @keyframes letterAppear {
-            0% { opacity: 0; transform: scale(0) rotate(-180deg); }
-            50% { opacity: 1; transform: scale(1.2) rotate(10deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-
-        @keyframes letterDisappear {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.5); }
-            100% { opacity: 0; transform: scale(0) rotate(180deg); }
-        }
-
-        /* Sabit başlık - toplanma noktası */
+        /* Sabit başlık */
         .title-container {
             margin-bottom: 20px;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
 
-        .title-letter {
-            display: inline-block;
+        .title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 42px;
             font-weight: 700;
             color: #fff;
-            letter-spacing: 2px;
+            letter-spacing: 6px;
             text-transform: uppercase;
             opacity: 0;
             transition: all 0.5s ease;
         }
 
-        .title-letter.visible {
+        .title.visible {
             opacity: 1;
-            animation: letterPulse 2s ease-in-out infinite;
+            animation: titlePulse 2s ease-in-out infinite;
         }
 
-        @keyframes letterPulse {
-            0%, 100% { transform: scale(1); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-            50% { transform: scale(1.05); text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+        @keyframes titlePulse {
+            0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+            50% { text-shadow: 0 0 25px rgba(255,255,255,0.6); }
         }
 
         /* Roblox logosu */
@@ -318,8 +306,8 @@
 
         /* Responsive */
         @media (max-width: 480px) {
-            .scramble-letter { font-size: 28px; }
-            .title-letter { font-size: 32px; }
+            .flying-text { font-size: 32px; letter-spacing: 3px; }
+            .title { font-size: 32px; letter-spacing: 3px; }
             .profile-gif { width: 110px; height: 110px; }
             .roblox-btn { width: 45px; height: 45px; }
             .roblox-icon { width: 24px; height: 24px; }
@@ -345,13 +333,15 @@
     <div class="cursor" id="cursor"></div>
     <div class="cursor-dot" id="cursorDot"></div>
 
-    <!-- Rastgele harfler container -->
-    <div id="scrambleContainer"></div>
+    <!-- Uçan yazı container -->
+    <div id="flyingContainer"></div>
 
     <!-- Ana içerik -->
     <div class="container">
         <!-- Sabit başlık -->
-        <div class="title-container" id="titleContainer"></div>
+        <div class="title-container">
+            <h1 class="title" id="mainTitle">zyntherax</h1>
+        </div>
 
         <!-- Roblox logosu -->
         <a href="https://www.roblox.com/tr/users/1582566009/profile" 
@@ -374,105 +364,115 @@
 
     <script>
         const titleText = "zyntherax";
-        const scrambleContainer = document.getElementById('scrambleContainer');
-        const titleContainer = document.getElementById('titleContainer');
+        const flyingContainer = document.getElementById('flyingContainer');
+        const mainTitle = document.getElementById('mainTitle');
 
-        // Sabit başlık harflerini oluştur (başlangıçta gizli)
-        function createTitleLetters() {
-            titleContainer.innerHTML = '';
-            const letters = titleText.split('');
-            letters.forEach((char) => {
-                const span = document.createElement('span');
-                span.className = 'title-letter';
-                span.textContent = char;
-                titleContainer.appendChild(span);
-            });
-        }
-        createTitleLetters();
-
-        // Rastgele pozisyon al - ekranın görünür alanında
+        // Rastgele pozisyon - ekranın görünür alanında
         function getRandomPosition() {
             const padding = 100;
-            const x = padding + Math.random() * (window.innerWidth - padding * 2);
-            const y = padding + Math.random() * (window.innerHeight - padding * 2);
+            const x = padding + Math.random() * (window.innerWidth - padding * 2 - 200);
+            const y = padding + Math.random() * (window.innerHeight - padding * 2 - 50);
             return { x, y };
         }
 
-        // Harfleri rastgele yerlerde göster, sonra topla
-        function scrambleAnimation() {
-            const letters = titleText.split('');
-            const titleLetters = document.querySelectorAll('.title-letter');
+        // Yazıyı rastgele yerde göster, sonra sil, başka yerde göster
+        function textAppearAnimation() {
+            const positions = [
+                { x: window.innerWidth / 2 - 150, y: 100 },
+                { x: 50, y: window.innerHeight / 2 - 25 },
+                { x: window.innerWidth - 350, y: window.innerHeight / 2 - 25 },
+                { x: window.innerWidth / 2 - 150, y: window.innerHeight - 150 },
+                { x: 100, y: 100 },
+                { x: window.innerWidth - 300, y: 100 },
+                { x: 100, y: window.innerHeight - 150 },
+                { x: window.innerWidth - 300, y: window.innerHeight - 150 }
+            ];
 
-            // Önce sabit başlığı gizle
-            titleLetters.forEach(letter => {
-                letter.classList.remove('visible');
-                letter.style.opacity = '0';
-            });
+            let currentPos = 0;
 
-            // Rastgele harfleri oluştur
-            scrambleContainer.innerHTML = '';
-            const scrambleLetters = [];
+            function showNext() {
+                // Önceki yazıyı temizle
+                flyingContainer.innerHTML = '';
 
-            letters.forEach((char, index) => {
+                // Ana başlığı gizle
+                mainTitle.classList.remove('visible');
+
                 const span = document.createElement('span');
-                span.className = 'scramble-letter';
-                span.textContent = char;
+                span.className = 'flying-text';
+                span.textContent = titleText;
 
-                const pos = getRandomPosition();
+                const pos = positions[currentPos % positions.length];
                 span.style.left = pos.x + 'px';
                 span.style.top = pos.y + 'px';
                 span.style.opacity = '0';
+                span.style.transform = 'scale(0.5)';
 
-                scrambleContainer.appendChild(span);
-                scrambleLetters.push(span);
-            });
+                flyingContainer.appendChild(span);
 
-            // Harfleri teker teker rastgele yerlerde göster
-            scrambleLetters.forEach((letter, index) => {
-                setTimeout(() => {
-                    letter.style.animation = 'letterAppear 0.5s ease forwards';
-                }, index * 150);
-            });
+                // Belirme animasyonu
+                let opacity = 0;
+                let scale = 0.5;
+                const appearDuration = 500;
+                const startTime = Date.now();
 
-            // 2 saniye bekle, sonra harfleri topla
-            setTimeout(() => {
-                // Rastgele harfleri sil
-                scrambleLetters.forEach((letter, index) => {
-                    setTimeout(() => {
-                        letter.style.animation = 'letterDisappear 0.4s ease forwards';
-                    }, index * 50);
-                });
+                function appear() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / appearDuration, 1);
 
-                // Sabit başlık harflerini teker teker göster
-                setTimeout(() => {
-                    titleLetters.forEach((letter, index) => {
+                    opacity = progress;
+                    scale = 0.5 + (progress * 0.5);
+
+                    span.style.opacity = opacity;
+                    span.style.transform = `scale(${scale})`;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(appear);
+                    } else {
+                        // 1 saniye bekle
                         setTimeout(() => {
-                            letter.classList.add('visible');
-                        }, index * 100);
-                    });
-                }, 500);
+                            // Silinme animasyonu
+                            let fadeOpacity = 1;
+                            const fadeStart = Date.now();
 
-            }, 2500);
+                            function fade() {
+                                const fadeElapsed = Date.now() - fadeStart;
+                                const fadeProgress = Math.min(fadeElapsed / 400, 1);
 
-            // 5 saniye sonra tekrar başla
-            setTimeout(() => {
-                // Sabit başlığı sil
-                titleLetters.forEach((letter, index) => {
-                    setTimeout(() => {
-                        letter.classList.remove('visible');
-                        letter.style.opacity = '0';
-                    }, index * 50);
-                });
+                                fadeOpacity = 1 - fadeProgress;
+                                span.style.opacity = fadeOpacity;
+                                span.style.transform = `scale(${1 + fadeProgress * 0.3})`;
 
-                setTimeout(() => {
-                    scrambleAnimation();
-                }, 1000);
-            }, 7000);
+                                if (fadeProgress < 1) {
+                                    requestAnimationFrame(fade);
+                                } else {
+                                    span.remove();
+                                    currentPos++;
+
+                                    // 3 pozisyon sonra ana başlığı göster
+                                    if (currentPos % 3 === 0 && currentPos > 0) {
+                                        mainTitle.classList.add('visible');
+                                        setTimeout(() => {
+                                            mainTitle.classList.remove('visible');
+                                            setTimeout(showNext, 500);
+                                        }, 2000);
+                                    } else {
+                                        setTimeout(showNext, 300);
+                                    }
+                                }
+                            }
+                            requestAnimationFrame(fade);
+                        }, 1000);
+                    }
+                }
+                requestAnimationFrame(appear);
+            }
+
+            showNext();
         }
 
         // Sayfa açıldığında başlat
         window.addEventListener('load', () => {
-            setTimeout(scrambleAnimation, 500);
+            setTimeout(textAppearAnimation, 500);
         });
 
         // Parçacık oluştur
