@@ -24,7 +24,130 @@
             background: #000;
         }
 
-        /* Kendi MP4 Video Arka Plan - Hiçbir UI yok */
+        /* ===== INTERAKTIF ANIMATED FALLBACK ARKA PLAN ===== */
+        .fallback-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000 100%);
+            overflow: hidden;
+        }
+
+        /* Hareketli gradient mesh */
+        .gradient-mesh {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 50, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(58, 134, 255, 0.08) 0%, transparent 60%);
+            animation: meshMove 20s ease-in-out infinite;
+            transition: transform 0.3s ease-out;
+        }
+
+        @keyframes meshMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-5%, 5%) rotate(2deg); }
+            66% { transform: translate(5%, -5%) rotate(-2deg); }
+        }
+
+        /* Mouse takip eden glow */
+        .mouse-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(120, 50, 255, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        /* Floating shapes */
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: floatShape 15s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(120, 50, 255, 0.3);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 0, 110, 0.2);
+            top: 60%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            width: 350px;
+            height: 350px;
+            background: rgba(58, 134, 255, 0.2);
+            bottom: 10%;
+            left: 40%;
+            animation-delay: -10s;
+        }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(20px, 40px) scale(1.05); }
+        }
+
+        /* Grid lines */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(120, 50, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120, 50, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 10s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
+
+        /* Stars */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* ===== VIDEO ARKA PLAN ===== */
         .video-bg {
             position: fixed;
             top: 0;
@@ -33,6 +156,11 @@
             height: 100%;
             object-fit: cover;
             z-index: -2;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .video-bg.loaded {
             opacity: 0.9;
         }
 
@@ -332,10 +460,22 @@
         }
     </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
+    <!-- ===== INTERAKTIF ANIMATED FALLBACK ARKA PLAN ===== -->
+    <div class="fallback-bg" id="fallbackBg">
+        <div class="gradient-mesh" id="gradientMesh"></div>
+        <div class="mouse-glow" id="mouseGlow"></div>
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="grid-lines"></div>
+        <div id="starsContainer"></div>
+    </div>
+
     <!-- Kendi MP4 Video Arka Plan - Tam ekran, hiçbir UI yok -->
-    <video class="video-bg" autoplay muted loop playsinline>
+    <video class="video-bg" id="videoBg" autoplay muted loop playsinline>
         <source src="https://raw.githubusercontent.com/zyntherax/zyntherax.github.io/main/wallpaper.mp4" type="video/mp4">
     </video>
     <div class="overlay"></div>
@@ -372,7 +512,73 @@
     </div>
 
     <script>
-        // Parçacık oluştur
+        // ===== YILDIZLAR OLUŞTUR =====
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                fragment.appendChild(star);
+            }
+            container.appendChild(fragment);
+        }
+        createStars();
+
+        // ===== VIDEO YÜKLENME KONTROLÜ =====
+        const video = document.getElementById('videoBg');
+        const fallbackBg = document.getElementById('fallbackBg');
+
+        video.addEventListener('loadeddata', function() {
+            video.classList.add('loaded');
+            // Video yüklendikten sonra fallback'i yavaşça gizle
+            setTimeout(() => {
+                fallbackBg.style.opacity = '0';
+                fallbackBg.style.transition = 'opacity 1s ease';
+            }, 500);
+        });
+
+        // Video hata durumunda fallback görünür kalır
+        video.addEventListener('error', function() {
+            console.log('Video yüklenemedi, fallback aktif');
+        });
+
+        // ===== MOUSE INTERAKTİF EFEKTLER =====
+        const mouseGlow = document.getElementById('mouseGlow');
+        const gradientMesh = document.getElementById('gradientMesh');
+        let mouseX = 0, mouseY = 0;
+        let meshX = 0, meshY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Mouse glow takip et
+            mouseGlow.style.left = mouseX + 'px';
+            mouseGlow.style.top = mouseY + 'px';
+            mouseGlow.style.opacity = '1';
+
+            // Gradient mesh hafif mouse yönüne kay
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            meshX = (mouseX - centerX) / centerX * 20;
+            meshY = (mouseY - centerY) / centerY * 20;
+            gradientMesh.style.transform = `translate(${meshX}px, ${meshY}px)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            mouseGlow.style.opacity = '0';
+            gradientMesh.style.transform = 'translate(0, 0)';
+        });
+
+        // ===== PARÇACIKLAR =====
         function createParticles() {
             const container = document.getElementById('particles');
             const fragment = document.createDocumentFragment();
@@ -392,10 +598,9 @@
         }
         createParticles();
 
-        // Özel mouse imleci
+        // ===== ÖZEL MOUSE İMLECİ =====
         const cursor = document.getElementById('cursor');
         const cursorDot = document.getElementById('cursorDot');
-        let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
         let trailCounter = 0;
 
