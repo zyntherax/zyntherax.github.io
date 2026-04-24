@@ -145,7 +145,7 @@
             100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
         }
 
-        /* Ana container - TAM ORTADA */
+        /* Ana container */
         .container {
             position: relative;
             z-index: 1;
@@ -154,68 +154,70 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            animation: fadeInUp 1.2s ease-out;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Harf harf animasyonlu başlık - Profilin ÜSTÜNDE */
+        .title-container {
+            margin-bottom: 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Başlık - yazı silinip tekrar gelme efekti */
-        .title {
+        .title-letter {
+            display: inline-block;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 25px;
-            letter-spacing: 6px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            animation: titleGlow 4s ease-in-out infinite, textReveal 3s ease-in-out infinite;
-            text-shadow: 0 0 30px rgba(120, 50, 255, 0.4);
-            overflow: hidden;
-            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(-100px) rotate(180deg);
+            animation: letterDrop 0.6s ease forwards;
         }
 
-        @keyframes textReveal {
+        @keyframes letterDrop {
             0% {
-                clip-path: inset(0 100% 0 0);
                 opacity: 0;
+                transform: translateY(-100px) rotate(180deg) scale(0);
             }
-            20% {
-                clip-path: inset(0 0 0 0);
+            60% {
                 opacity: 1;
+                transform: translateY(10px) rotate(-10deg) scale(1.2);
             }
             80% {
-                clip-path: inset(0 0 0 0);
-                opacity: 1;
+                transform: translateY(-5px) rotate(5deg) scale(0.95);
             }
             100% {
-                clip-path: inset(0 0 0 100%);
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+        }
+
+        /* Harflerin silinip tekrar gelmesi */
+        .title-letter {
+            animation: letterDrop 0.6s ease forwards, letterFade 4s ease-in-out infinite;
+            animation-delay: var(--drop-delay), var(--fade-delay);
+        }
+
+        @keyframes letterFade {
+            0%, 15% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            20% {
                 opacity: 0;
+                transform: translateY(-30px) scale(0.5);
+            }
+            25%, 100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.5);
             }
         }
 
-        @keyframes titleGlow {
-            0%, 100% {
-                text-shadow: 0 0 20px rgba(120, 50, 255, 0.5),
-                            0 0 40px rgba(120, 50, 255, 0.3),
-                            0 0 60px rgba(120, 50, 255, 0.1);
-            }
-            50% {
-                text-shadow: 0 0 30px rgba(255, 50, 150, 0.5),
-                            0 0 60px rgba(255, 50, 150, 0.3),
-                            0 0 90px rgba(255, 50, 150, 0.1);
-            }
-        }
-
-        /* Roblox logosu butonu - Profilin az üstünde */
+        /* Roblox logosu */
         .roblox-btn {
             display: inline-flex;
             align-items: center;
@@ -231,7 +233,7 @@
             backdrop-filter: blur(15px);
             position: relative;
             overflow: hidden;
-            animation: fadeInUp 1.5s ease-out 0.3s both, logoPulse 2s ease-in-out infinite;
+            animation: logoPulse 2s ease-in-out infinite;
             margin-bottom: 15px;
         }
 
@@ -273,7 +275,7 @@
             filter: brightness(1.2);
         }
 
-        /* Profil GIF - Küçültülmüş */
+        /* Profil GIF */
         .profile-gif {
             width: 140px;
             height: 140px;
@@ -303,13 +305,13 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Alt yazı - Animasyonlu */
+        /* Alt yazı */
         .subtitle {
             margin-top: 15px;
             font-size: 12px;
             color: #777;
             letter-spacing: 2px;
-            animation: fadeInUp 1.8s ease-out 0.6s both, textFlicker 4s ease-in-out infinite;
+            animation: textFlicker 4s ease-in-out infinite;
         }
 
         @keyframes textFlicker {
@@ -319,7 +321,7 @@
 
         /* Responsive */
         @media (max-width: 480px) {
-            .title { font-size: 32px; letter-spacing: 3px; }
+            .title-letter { font-size: 32px; }
             .profile-gif { width: 110px; height: 110px; }
             .roblox-btn { width: 40px; height: 40px; }
             .roblox-icon { width: 20px; height: 20px; }
@@ -347,10 +349,10 @@
 
     <!-- Ana içerik -->
     <div class="container">
-        <!-- Başlık - silinip tekrar gelen -->
-        <h1 class="title">zyntherax</h1>
+        <!-- Başlık - Harf harf süzülerek gelen, profilin ÜSTÜNDE -->
+        <div class="title-container" id="titleContainer"></div>
 
-        <!-- Roblox logosu - Profilin az üstünde -->
+        <!-- Roblox logosu -->
         <a href="https://www.roblox.com/tr/users/1582566009/profile" 
            class="roblox-btn" 
            target="_blank"
@@ -360,16 +362,48 @@
                  class="roblox-icon">
         </a>
 
-        <!-- Profil GIF - Küçültülmüş -->
+        <!-- Profil GIF -->
         <img src="https://i.pinimg.com/originals/87/8c/53/878c5376b10b2f842a06fae2d386c463.gif" 
              alt="profile" 
              class="profile-gif">
 
-        <!-- Alt yazı - Animasyonlu yanıp sönen -->
+        <!-- Alt yazı -->
         <p class="subtitle">currently doing nothing</p>
     </div>
 
     <script>
+        // Harf harf animasyonlu başlık
+        const titleText = "zyntherax";
+        const titleContainer = document.getElementById('titleContainer');
+
+        function createLetters() {
+            titleContainer.innerHTML = '';
+            const letters = titleText.split('');
+
+            letters.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'title-letter';
+                span.textContent = char;
+                span.style.setProperty('--drop-delay', `${index * 0.1}s`);
+                span.style.setProperty('--fade-delay', `${index * 0.1}s`);
+                titleContainer.appendChild(span);
+            });
+        }
+
+        // İlk oluşturma
+        createLetters();
+
+        // Sürekli döngü - harfler silinip tekrar geliyor
+        setInterval(() => {
+            const letters = document.querySelectorAll('.title-letter');
+            letters.forEach((letter, index) => {
+                letter.style.animation = 'none';
+                letter.offsetHeight; // Reflow
+                letter.style.animation = `letterDrop 0.6s ease forwards, letterFade 4s ease-in-out infinite`;
+                letter.style.animationDelay = `${index * 0.1}s, ${index * 0.1 + 2}s`;
+            });
+        }, 5000);
+
         // Parçacık oluştur
         function createParticles() {
             const container = document.getElementById('particles');
