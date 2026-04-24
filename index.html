@@ -6,12 +6,7 @@
     <title>zyntherax</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -24,37 +19,29 @@
             background: #000;
         }
 
-        /* ===== INTERAKTIF ANIMATED FALLBACK ARKA PLAN ===== */
+        /* ===== ANLIK GORUNEN FALLBACK (Video yokken bu calisir) ===== */
         .fallback-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: -3;
-            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000 100%);
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(120, 50, 255, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(58, 134, 255, 0.1) 0%, transparent 60%),
+                #050510;
             overflow: hidden;
-            opacity: 1;
-            transition: opacity 1.5s ease;
-        }
-
-        .fallback-bg.hidden {
-            opacity: 0;
-            pointer-events: none;
         }
 
         .gradient-mesh {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 50, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(58, 134, 255, 0.08) 0%, transparent 60%);
-            animation: meshMove 20s ease-in-out infinite;
-            transition: transform 0.3s ease-out;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background:
+                radial-gradient(circle at 30% 70%, rgba(120, 50, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 70% 30%, rgba(255, 0, 110, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(58, 134, 255, 0.1) 0%, transparent 50%);
+            animation: meshMove 15s ease-in-out infinite;
         }
 
         @keyframes meshMove {
@@ -65,196 +52,114 @@
 
         .mouse-glow {
             position: absolute;
-            width: 600px;
-            height: 600px;
+            width: 500px; height: 500px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(120, 50, 255, 0.2) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(120, 50, 255, 0.25) 0%, transparent 70%);
             pointer-events: none;
             transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease;
+            transition: opacity 0.2s ease;
             opacity: 0;
         }
 
         .floating-shape {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: floatShape 15s ease-in-out infinite;
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: floatShape 12s ease-in-out infinite;
         }
 
-        .shape-1 {
-            width: 400px;
-            height: 400px;
-            background: rgba(120, 50, 255, 0.3);
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 0, 110, 0.2);
-            top: 60%;
-            right: 15%;
-            animation-delay: -5s;
-        }
-
-        .shape-3 {
-            width: 350px;
-            height: 350px;
-            background: rgba(58, 134, 255, 0.2);
-            bottom: 10%;
-            left: 40%;
-            animation-delay: -10s;
-        }
+        .shape-1 { width: 400px; height: 400px; background: rgba(120, 50, 255, 0.3); top: 10%; left: 5%; animation-delay: 0s; }
+        .shape-2 { width: 300px; height: 300px; background: rgba(255, 0, 110, 0.2); top: 60%; right: 10%; animation-delay: -4s; }
+        .shape-3 { width: 350px; height: 350px; background: rgba(58, 134, 255, 0.2); bottom: 5%; left: 35%; animation-delay: -8s; }
 
         @keyframes floatShape {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(50px, -50px) scale(1.1); }
-            50% { transform: translate(-30px, 30px) scale(0.9); }
-            75% { transform: translate(20px, 40px) scale(1.05); }
+            25% { transform: translate(40px, -40px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.05); }
         }
 
         .grid-lines {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(120, 50, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(120, 50, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 10s linear infinite;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(120, 50, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120, 50, 255, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 8s linear infinite;
         }
 
         @keyframes gridMove {
             0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(60px); }
         }
 
         .star {
             position: absolute;
-            width: 2px;
-            height: 2px;
             background: #fff;
             border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
+            animation: twinkle 2.5s ease-in-out infinite;
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
+            0%, 100% { opacity: 0.15; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.3); }
         }
 
-        /* ===== VIDEO ARKA PLAN ===== */
+        /* ===== VIDEO (Aninda yuklenmeli) ===== */
         .video-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
             z-index: -2;
             opacity: 0;
-            transition: opacity 2s ease;
-            background: #000;
-        }
-
-        .video-bg.loaded {
-            opacity: 0.9;
-        }
-
-        .video-loading {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            opacity: 0;
             transition: opacity 0.3s ease;
-            pointer-events: none;
+            background: #000;
+            /* ANAHTAR: Tarayici videoyu hemen indirmeye baslar */
         }
 
-        .video-loading.active {
+        .video-bg.ready {
             opacity: 1;
-        }
-
-        .loading-dot {
-            width: 6px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            animation: loadingBounce 1.4s ease-in-out infinite;
-        }
-
-        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes loadingBounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-
-        .loading-text {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 1px;
-            text-transform: uppercase;
         }
 
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.35);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
             z-index: -1;
         }
 
         .particles {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
         }
 
         .particle {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.4);
+            width: 2px; height: 2px;
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             animation: particleFloat linear infinite;
-            will-change: transform, opacity;
         }
 
         @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            5% { opacity: 0.6; }
-            95% { opacity: 0.6; }
-            100% {
-                transform: translateY(-10vh) translateX(80px);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) translateX(60px); opacity: 0; }
         }
 
-        /* Özel mouse imleci */
+        /* Mouse */
         .cursor {
             position: fixed;
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border: 2px solid rgba(255, 255, 255, 0.8);
             border-radius: 50%;
             pointer-events: none;
@@ -262,39 +167,33 @@
             transition: transform 0.08s ease-out, width 0.2s ease, height 0.2s ease;
             transform: translate(-50%, -50%);
             mix-blend-mode: difference;
-            will-change: transform;
         }
 
         .cursor-dot {
             position: fixed;
-            width: 5px;
-            height: 5px;
+            width: 5px; height: 5px;
             background: #fff;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            will-change: transform;
         }
 
         .cursor.hover {
-            width: 45px;
-            height: 45px;
+            width: 45px; height: 45px;
             border-color: rgba(120, 50, 255, 0.8);
             background: rgba(120, 50, 255, 0.1);
         }
 
         .trail {
             position: fixed;
-            width: 6px;
-            height: 6px;
+            width: 6px; height: 6px;
             background: rgba(120, 50, 255, 0.5);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            animation: trailFade 0.6s ease-out forwards;
-            will-change: transform, opacity;
+            animation: trailFade 0.5s ease-out forwards;
         }
 
         @keyframes trailFade {
@@ -302,7 +201,7 @@
             100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
         }
 
-        /* Ana container */
+        /* Container */
         .container {
             position: relative;
             z-index: 1;
@@ -313,7 +212,6 @@
             justify-content: center;
         }
 
-        /* Başlık */
         .title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 42px;
@@ -322,12 +220,12 @@
             letter-spacing: 6px;
             text-transform: uppercase;
             margin-bottom: 20px;
-            text-shadow: 
+            text-shadow:
                 0 0 10px rgba(255, 255, 255, 0.8),
                 0 0 20px rgba(255, 255, 255, 0.6),
                 0 0 40px rgba(255, 255, 255, 0.4),
                 0 0 80px rgba(255, 255, 255, 0.2);
-            animation: 
+            animation:
                 typewriter 4s steps(9) infinite,
                 shake 0.1s infinite,
                 glowPulse 2s ease-in-out infinite;
@@ -338,26 +236,11 @@
         }
 
         @keyframes typewriter {
-            0%, 100% {
-                width: 0;
-                border-right-color: rgba(255, 255, 255, 0.8);
-            }
-            40% {
-                width: 100%;
-                border-right-color: rgba(255, 255, 255, 0.8);
-            }
-            50% {
-                width: 100%;
-                border-right-color: transparent;
-            }
-            60% {
-                width: 100%;
-                border-right-color: rgba(255, 255, 255, 0.8);
-            }
-            90% {
-                width: 0;
-                border-right-color: rgba(255, 255, 255, 0.8);
-            }
+            0%, 100% { width: 0; border-right-color: rgba(255, 255, 255, 0.8); }
+            40% { width: 100%; border-right-color: rgba(255, 255, 255, 0.8); }
+            50% { width: 100%; border-right-color: transparent; }
+            60% { width: 100%; border-right-color: rgba(255, 255, 255, 0.8); }
+            90% { width: 0; border-right-color: rgba(255, 255, 255, 0.8); }
         }
 
         @keyframes shake {
@@ -374,29 +257,15 @@
         }
 
         @keyframes glowPulse {
-            0%, 100% {
-                text-shadow: 
-                    0 0 10px rgba(255, 255, 255, 0.8),
-                    0 0 20px rgba(255, 255, 255, 0.6),
-                    0 0 40px rgba(255, 255, 255, 0.4),
-                    0 0 80px rgba(255, 255, 255, 0.2);
-            }
-            50% {
-                text-shadow: 
-                    0 0 20px rgba(255, 255, 255, 1),
-                    0 0 40px rgba(255, 255, 255, 0.8),
-                    0 0 60px rgba(255, 255, 255, 0.6),
-                    0 0 100px rgba(255, 255, 255, 0.4);
-            }
+            0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4), 0 0 80px rgba(255,255,255,0.2); }
+            50% { text-shadow: 0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.6), 0 0 100px rgba(255,255,255,0.4); }
         }
 
-        /* Roblox logosu */
         .roblox-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
@@ -413,18 +282,13 @@
         .roblox-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
             transition: left 0.6s ease;
         }
 
-        .roblox-btn:hover::before {
-            left: 100%;
-        }
-
+        .roblox-btn:hover::before { left: 100%; }
         .roblox-btn:hover {
             background: rgba(0, 0, 0, 0.7);
             border-color: rgba(255, 255, 255, 0.3);
@@ -433,24 +297,14 @@
         }
 
         @keyframes logoPulse {
-            0%, 100% {
-                box-shadow: 0 0 10px rgba(120, 50, 255, 0.2);
-            }
-            50% {
-                box-shadow: 0 0 25px rgba(120, 50, 255, 0.4);
-            }
+            0%, 100% { box-shadow: 0 0 10px rgba(120, 50, 255, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(120, 50, 255, 0.4); }
         }
 
-        .roblox-icon {
-            width: 28px;
-            height: 28px;
-            object-fit: contain;
-        }
+        .roblox-icon { width: 28px; height: 28px; object-fit: contain; }
 
-        /* Profil GIF */
         .profile-gif {
-            width: 140px;
-            height: 140px;
+            width: 140px; height: 140px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid transparent;
@@ -461,7 +315,6 @@
             margin-bottom: 20px;
             box-shadow: 0 0 50px rgba(120, 50, 255, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            will-change: transform;
             transform: translateZ(0);
             backface-visibility: hidden;
         }
@@ -480,8 +333,7 @@
         /* ===== CEREN CICEGI ===== */
         .flower-wrapper {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 120px; height: 120px;
             margin-top: 10px;
             cursor: pointer;
             display: flex;
@@ -491,27 +343,19 @@
 
         .flower {
             position: relative;
-            width: 80px;
-            height: 80px;
+            width: 80px; height: 80px;
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .flower-wrapper:hover .flower {
-            transform: scale(1.15);
-        }
-
-        .flower-wrapper:active .flower {
-            transform: scale(0.95);
-        }
+        .flower-wrapper:hover .flower { transform: scale(1.15); }
+        .flower-wrapper:active .flower { transform: scale(0.95); }
 
         .petal {
             position: absolute;
-            width: 28px;
-            height: 44px;
+            width: 28px; height: 44px;
             background: linear-gradient(180deg, #ff6b9d 0%, #c44569 50%, #8b2f5c 100%);
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform-origin: center bottom;
             box-shadow: 0 0 15px rgba(255, 107, 157, 0.4);
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -531,11 +375,9 @@
 
         .flower-center {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             background: radial-gradient(circle, #ffd700 0%, #ff8c00 70%, #cc6600 100%);
             border-radius: 50%;
             z-index: 2;
@@ -550,8 +392,7 @@
 
         .flower-text {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             font-family: 'Space Grotesk', sans-serif;
             font-size: 14px;
@@ -560,10 +401,7 @@
             white-space: nowrap;
             z-index: 3;
             opacity: 0;
-            text-shadow: 
-                0 0 10px rgba(255, 107, 157, 0.9),
-                0 0 30px rgba(255, 107, 157, 0.6),
-                0 0 60px rgba(255, 107, 157, 0.4);
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.9), 0 0 30px rgba(255, 107, 157, 0.6), 0 0 60px rgba(255, 107, 157, 0.4);
             pointer-events: none;
             transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -585,11 +423,9 @@
 
         .flower-glow {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
+            width: 0; height: 0;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(255, 107, 157, 0.6) 0%, transparent 70%);
             opacity: 0;
@@ -599,8 +435,7 @@
         }
 
         .flower-wrapper.opened .flower-glow {
-            width: 200px;
-            height: 200px;
+            width: 200px; height: 200px;
             opacity: 1;
         }
 
@@ -613,23 +448,14 @@
         }
 
         @keyframes heartFloat {
-            0% {
-                transform: translate(0, 0) scale(0) rotate(0deg);
-                opacity: 1;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(var(--rot));
-                opacity: 0;
-            }
+            0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 1; }
+            50% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(var(--rot)); opacity: 0; }
         }
 
         .flower-hint {
             position: absolute;
-            bottom: -25px;
-            left: 50%;
+            bottom: -25px; left: 50%;
             transform: translateX(-50%);
             font-size: 10px;
             color: rgba(255, 255, 255, 0.4);
@@ -641,9 +467,7 @@
             pointer-events: none;
         }
 
-        .flower-wrapper:hover .flower-hint {
-            opacity: 1;
-        }
+        .flower-wrapper:hover .flower-hint { opacity: 1; }
 
         /* Responsive */
         @media (max-width: 480px) {
@@ -656,12 +480,12 @@
             .petal { width: 22px; height: 36px; }
             .flower-center { width: 26px; height: 26px; }
             .flower-text { font-size: 12px; }
-            .video-loading { top: 10px; right: 10px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
-    <!-- ===== INTERAKTIF ANIMATED FALLBACK ARKA PLAN ===== -->
+    <!-- Fallback Arka Plan (Video yokken bu gorunur) -->
     <div class="fallback-bg" id="fallbackBg">
         <div class="gradient-mesh" id="gradientMesh"></div>
         <div class="mouse-glow" id="mouseGlow"></div>
@@ -672,46 +496,38 @@
         <div id="starsContainer"></div>
     </div>
 
-    <!-- Video Yükleniyor İndikatörü -->
-    <div class="video-loading" id="videoLoading">
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-        <span class="loading-text">Video</span>
-    </div>
-
-    <!-- Video Arka Plan - WebM önce (daha hafif), sonra MP4 -->
-    <video class="video-bg" id="videoBg" autoplay muted loop playsinline preload="metadata" poster="">
+    <!-- Video - preload=auto ile tarayici hemen indirmeye baslar -->
+    <video class="video-bg" id="videoBg" autoplay muted loop playsinline preload="auto">
         <source src="https://raw.githubusercontent.com/zyntherax/zyntherax.github.io/main/wallpaper.webm" type="video/webm">
         <source src="https://raw.githubusercontent.com/zyntherax/zyntherax.github.io/main/wallpaper.mp4" type="video/mp4">
     </video>
     <div class="overlay"></div>
 
-    <!-- Parçacıklar -->
+    <!-- Parcaciklar -->
     <div class="particles" id="particles"></div>
 
-    <!-- Özel mouse imleci -->
+    <!-- Ozel Mouse -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-dot" id="cursorDot"></div>
 
-    <!-- Ana içerik -->
+    <!-- Ana Icerik -->
     <div class="container">
         <h1 class="title">zyntherax</h1>
 
-        <img src="https://i.pinimg.com/originals/87/8c/53/878c5376b10b2f842a06fae2d386c463.gif" 
-             alt="profile" 
+        <img src="https://i.pinimg.com/originals/87/8c/53/878c5376b10b2f842a06fae2d386c463.gif"
+             alt="profile"
              class="profile-gif">
 
-        <a href="https://www.roblox.com/tr/users/1582566009/profile" 
-           class="roblox-btn" 
+        <a href="https://www.roblox.com/tr/users/1582566009/profile"
+           class="roblox-btn"
            target="_blank"
            title="Roblox Profilim">
-            <img src="https://media.tenor.com/HO1YAH0_iMcAAAAj/roblox-logo.gif" 
-                 alt="Roblox" 
+            <img src="https://media.tenor.com/HO1YAH0_iMcAAAAj/roblox-logo.gif"
+                 alt="Roblox"
                  class="roblox-icon">
         </a>
 
-        <!-- Ceren Çiçeği -->
+        <!-- Ceren Cicegi -->
         <div class="flower-wrapper" id="cerenFlower">
             <div class="flower-glow"></div>
             <div class="flower">
@@ -732,14 +548,14 @@
         function createStars() {
             const container = document.getElementById('starsContainer');
             const fragment = document.createDocumentFragment();
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 120; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
                 star.style.animationDelay = Math.random() * 3 + 's';
                 star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                const size = Math.random() * 2 + 1;
+                const size = Math.random() * 2.5 + 0.5;
                 star.style.width = size + 'px';
                 star.style.height = size + 'px';
                 fragment.appendChild(star);
@@ -748,48 +564,32 @@
         }
         createStars();
 
-        // ===== VIDEO YÜKLEME YÖNETİMİ =====
+        // ===== VIDEO - ANLIK YUKLEME =====
         const video = document.getElementById('videoBg');
         const fallbackBg = document.getElementById('fallbackBg');
-        const videoLoading = document.getElementById('videoLoading');
-        let videoLoaded = false;
 
-        // Yükleniyor göster
-        videoLoading.classList.add('active');
-
-        // Video yeterli veri gelince çalışmaya hazır
-        video.addEventListener('canplay', function() {
-            if (!videoLoaded) {
-                videoLoaded = true;
-                video.classList.add('loaded');
-                videoLoading.classList.remove('active');
-                
-                // Fallback'i yavaşça gizle
-                setTimeout(() => {
-                    fallbackBg.classList.add('hidden');
-                }, 800);
-                
-                // Oynatmayı garantile
-                video.play().catch(e => console.log('Autoplay engellendi:', e));
-            }
+        // 1) Tarayici videoyu hemen bufferlamaya baslar (preload=auto sayesinde)
+        // 2) İlk kare hazir olur olmaz goster
+        video.addEventListener('loadeddata', function() {
+            video.classList.add('ready');
+            // Video hazir, fallback'i hemen gizle (0.3s transition)
+            fallbackBg.style.opacity = '0';
         });
 
-        // Hata durumunda fallback kalıcı olsun
-        video.addEventListener('error', function(e) {
-            console.log('Video yüklenemedi, fallback aktif kalıyor');
-            videoLoading.classList.remove('active');
+        // Hata olursa fallback kalici olsun
+        video.addEventListener('error', function() {
+            console.log('Video yuklenemedi');
             video.style.display = 'none';
         });
 
-        // Çok uzun süre yüklenmezse timeout (10 saniye)
+        // Cok uzun surerse (8sn) fallback'te kal
         setTimeout(() => {
-            if (!videoLoaded) {
-                console.log('Video timeout - fallback kullanılıyor');
-                videoLoading.classList.remove('active');
+            if (!video.classList.contains('ready')) {
+                console.log('Video timeout - fallback aktif');
             }
-        }, 10000);
+        }, 8000);
 
-        // ===== MOUSE EFEKTLERİ =====
+        // ===== MOUSE EFEKTLERI =====
         const mouseGlow = document.getElementById('mouseGlow');
         const gradientMesh = document.getElementById('gradientMesh');
         let mouseX = 0, mouseY = 0;
@@ -798,7 +598,6 @@
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-
             mouseGlow.style.left = mouseX + 'px';
             mouseGlow.style.top = mouseY + 'px';
             mouseGlow.style.opacity = '1';
@@ -815,16 +614,16 @@
             gradientMesh.style.transform = 'translate(0, 0)';
         });
 
-        // ===== PARÇACIKLAR =====
+        // ===== PARCACIKLAR =====
         function createParticles() {
             const container = document.getElementById('particles');
             const fragment = document.createDocumentFragment();
-            for (let i = 0; i < 60; i++) {
+            for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 12 + 8) + 's';
-                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 6) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
                 const size = Math.random() * 2 + 1;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
@@ -835,7 +634,7 @@
         }
         createParticles();
 
-        // ===== ÖZEL MOUSE İMLECİ =====
+        // ===== OZEL MOUSE =====
         const cursor = document.getElementById('cursor');
         const cursorDot = document.getElementById('cursorDot');
         let cursorX = 0, cursorY = 0;
@@ -854,13 +653,13 @@
                 trail.style.left = mouseX + 'px';
                 trail.style.top = mouseY + 'px';
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 600);
+                setTimeout(() => trail.remove(), 500);
             }
         });
 
         function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.12;
-            cursorY += (mouseY - cursorY) * 0.12;
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
             cursor.style.left = cursorX + 'px';
             cursor.style.top = cursorY + 'px';
             requestAnimationFrame(animateCursor);
@@ -878,7 +677,6 @@
 
         flower.addEventListener('click', (e) => {
             isOpen = !isOpen;
-            
             if (isOpen) {
                 flower.classList.add('opened');
                 createHeartBurst(e.clientX, e.clientY);
@@ -893,20 +691,17 @@
                 const heart = document.createElement('div');
                 heart.className = 'heart-particle';
                 heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                
                 const angle = (Math.PI * 2 * i) / 12;
                 const distance = 60 + Math.random() * 80;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance - 40;
                 const rot = (Math.random() - 0.5) * 60;
-                
                 heart.style.left = x + 'px';
                 heart.style.top = y + 'px';
                 heart.style.setProperty('--tx', tx + 'px');
                 heart.style.setProperty('--ty', ty + 'px');
                 heart.style.setProperty('--rot', rot + 'deg');
                 heart.style.animationDelay = (Math.random() * 0.2) + 's';
-                
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), 2000);
             }
