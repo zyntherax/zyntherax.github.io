@@ -1,483 +1,427 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zyntherax</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zyntherax</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;cursor:none}
+body{
+  background:#000;
+  min-height:100vh;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Rajdhani',sans-serif;
+}
+.video-bg{
+  position:fixed;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  z-index:0;
+  opacity:0;
+  transition:opacity 1.2s ease;
+}
+.video-bg.ready{opacity:1}
+.grade{position:fixed;inset:0;z-index:1;pointer-events:none}
+.grade-dark{background:rgba(0,0,0,0.45)}
+.grade-vignette{background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.5) 70%,rgba(0,0,0,0.85) 100%)}
+.grade-scanlines{background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px)}
+.grain{
+  position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:gs 0.2s steps(1) infinite;
+}
+@keyframes gs{
+  0%{background-position:0 0}25%{background-position:-80px 40px}
+  50%{background-position:60px -30px}75%{background-position:-20px 70px}
+}
+.glitch-lines{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.gl{position:absolute;left:0;right:0;height:1px;background:rgba(160,0,255,0.45);opacity:0;animation:gli 6s infinite}
+.gl:nth-child(1){top:23%;animation-delay:0s;animation-duration:5s}
+.gl:nth-child(2){top:47%;animation-delay:1.8s;animation-duration:7s}
+.gl:nth-child(3){top:71%;animation-delay:3.2s;animation-duration:4s}
+.gl:nth-child(4){top:85%;animation-delay:0.7s;animation-duration:8s;background:rgba(255,0,80,0.3)}
+@keyframes gli{
+  0%,90%,100%{opacity:0;transform:scaleX(0);transform-origin:left}
+  92%{opacity:1;transform:scaleX(0.3);transform-origin:left}
+  94%{opacity:0}95%{opacity:1;transform:scaleX(1)}98%{opacity:0}
+}
+.corner{position:fixed;z-index:3;width:55px;height:55px;pointer-events:none}
+.ctl{top:18px;left:18px;border-top:1px solid rgba(160,0,255,0.45);border-left:1px solid rgba(160,0,255,0.45)}
+.ctr{top:18px;right:18px;border-top:1px solid rgba(160,0,255,0.45);border-right:1px solid rgba(160,0,255,0.45)}
+.cbl{bottom:18px;left:18px;border-bottom:1px solid rgba(160,0,255,0.45);border-left:1px solid rgba(160,0,255,0.45)}
+.cbr{bottom:18px;right:18px;border-bottom:1px solid rgba(160,0,255,0.45);border-right:1px solid rgba(160,0,255,0.45)}
+.hud{position:fixed;z-index:3;pointer-events:none;opacity:0.18}
+.hudh{left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(160,0,255,0.9),transparent)}
+.ht{top:14%}.hb{bottom:14%}
+.hudv{top:0;bottom:0;width:1px;background:linear-gradient(0deg,transparent,rgba(160,0,255,0.9),transparent)}
+.hl{left:11%}.hr{right:11%}
+.orbs{position:fixed;inset:0;z-index:1;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(75px)}
+.orb1{
+  width:520px;height:520px;
+  background:radial-gradient(circle at 40% 40%,rgba(90,0,190,0.45),transparent 65%);
+  top:-160px;left:-160px;
+  animation:od1 20s ease-in-out infinite;
+}
+.orb2{
+  width:420px;height:420px;
+  background:radial-gradient(circle at 60% 60%,rgba(170,0,55,0.38),transparent 65%);
+  bottom:-110px;right:-110px;
+  animation:od2 25s ease-in-out infinite;
+}
+.orb3{
+  width:280px;height:280px;
+  background:radial-gradient(circle,rgba(50,0,160,0.22),transparent 65%);
+  top:35%;right:8%;
+  animation:od3 18s ease-in-out infinite;
+}
+@keyframes od1{0%,100%{transform:translate(0,0)}33%{transform:translate(70px,50px)}66%{transform:translate(-35px,80px)}}
+@keyframes od2{0%,100%{transform:translate(0,0)}33%{transform:translate(-80px,-55px)}66%{transform:translate(45px,-75px)}}
+@keyframes od3{0%,100%{transform:translate(0,0)}50%{transform:translate(-45px,55px)}}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-            background: #000;
-        }
+/* 3D RINGS */
+.rings-scene{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  z-index:1;pointer-events:none;
+  width:580px;height:580px;
+  perspective:900px;
+  transition:transform 0.1s ease-out;
+}
+.ring{
+  position:absolute;top:50%;left:50%;
+  border-radius:50%;
+  border:1px solid transparent;
+  transform-style:preserve-3d;
+}
+.r1{width:500px;height:500px;margin:-250px 0 0 -250px;border-color:rgba(130,0,255,0.13);animation:rr1 13s linear infinite}
+.r2{width:370px;height:370px;margin:-185px 0 0 -185px;border-color:rgba(200,0,75,0.1);animation:rr2 19s linear infinite reverse}
+.r3{width:250px;height:250px;margin:-125px 0 0 -125px;border-color:rgba(90,0,190,0.16);animation:rr3 9s linear infinite}
+@keyframes rr1{from{transform:rotateX(70deg) rotateZ(0)}to{transform:rotateX(70deg) rotateZ(360deg)}}
+@keyframes rr2{from{transform:rotateX(60deg) rotateY(0)}to{transform:rotateX(60deg) rotateY(360deg)}}
+@keyframes rr3{from{transform:rotateY(80deg) rotateZ(0)}to{transform:rotateY(80deg) rotateZ(360deg)}}
 
-        .fallback-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -3;
-            background:
-                radial-gradient(ellipse at 20% 80%, rgba(120, 50, 255, 0.25) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(58, 134, 255, 0.1) 0%, transparent 60%),
-                #050510;
-            overflow: hidden;
-        }
+/* 3D CUBES */
+.cs{position:fixed;z-index:2;pointer-events:none;perspective:600px}
+.cs1{top:7%;left:5%;width:75px;height:75px}
+.cs2{bottom:7%;right:5%;width:58px;height:58px}
+.cube{width:100%;height:100%;transform-style:preserve-3d;animation:cr 9s linear infinite}
+.cs2 .cube{animation-direction:reverse;animation-duration:13s}
+@keyframes cr{from{transform:rotateX(-22deg) rotateY(0)}to{transform:rotateX(-22deg) rotateY(360deg)}}
+.face{position:absolute;width:100%;height:100%;border:1px solid rgba(140,0,255,0.3);background:rgba(70,0,150,0.04)}
+.front{transform:translateZ(37px)}.back{transform:translateZ(-37px) rotateY(180deg)}
+.left{transform:translateX(-37px) rotateY(-90deg)}.right{transform:translateX(37px) rotateY(90deg)}
+.top{transform:translateY(-37px) rotateX(90deg)}.bottom{transform:translateY(37px) rotateX(-90deg)}
+.cs2 .front{transform:translateZ(29px)}.cs2 .back{transform:translateZ(-29px) rotateY(180deg)}
+.cs2 .left{transform:translateX(-29px) rotateY(-90deg)}.cs2 .right{transform:translateX(29px) rotateY(90deg)}
+.cs2 .top{transform:translateY(-29px) rotateX(90deg)}.cs2 .bottom{transform:translateY(29px) rotateX(-90deg)}
 
-        .gradient-mesh {
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background:
-                radial-gradient(circle at 30% 70%, rgba(120, 50, 255, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 70% 30%, rgba(255, 0, 110, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(58, 134, 255, 0.1) 0%, transparent 50%);
-            animation: meshMove 15s ease-in-out infinite;
-        }
+/* PARTICLES */
+.particles{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.p{position:absolute;border-radius:50%;animation:pf linear infinite}
+@keyframes pf{
+  0%{transform:translateY(110vh);opacity:0}5%{opacity:0.8}
+  95%{opacity:0.5}100%{transform:translateY(-10vh);opacity:0}
+}
 
-        @keyframes meshMove {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(-5%, 5%) rotate(2deg); }
-            66% { transform: translate(5%, -5%) rotate(-2deg); }
-        }
+/* CURSOR */
+.cursor{
+  position:fixed;width:18px;height:18px;
+  border:1.5px solid rgba(170,0,255,0.9);
+  border-radius:50%;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .15s,height .15s,border-color .15s;
+  mix-blend-mode:exclusion;
+}
+.cursor-dot{
+  position:fixed;width:4px;height:4px;
+  background:rgba(210,80,255,1);border-radius:50%;
+  pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
+}
+.cursor.h{width:38px;height:38px;border-color:rgba(255,0,90,0.85)}
+.trail{
+  position:fixed;width:5px;height:5px;
+  background:rgba(140,0,255,0.55);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  animation:td .6s ease forwards;
+}
+@keyframes td{to{opacity:0;transform:translate(-50%,-50%) scale(0)}}
 
-        .mouse-glow {
-            position: absolute;
-            width: 500px; height: 500px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(120, 50, 255, 0.25) 0%, transparent 70%);
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.2s ease;
-            opacity: 0;
-        }
+/* WRAP */
+.wrap{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;align-items:center;
+  opacity:0;animation:wi 1.2s .8s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes wi{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 
-        .floating-shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.4;
-            animation: floatShape 12s ease-in-out infinite;
-        }
+.top-tag{
+  font-size:10px;font-weight:600;letter-spacing:6px;
+  color:rgba(170,0,255,0.65);text-transform:uppercase;
+  margin-bottom:18px;position:relative;
+}
+.top-tag::before,.top-tag::after{
+  content:'';position:absolute;top:50%;
+  width:28px;height:1px;background:rgba(170,0,255,0.35);
+}
+.top-tag::before{right:calc(100% + 10px)}
+.top-tag::after{left:calc(100% + 10px)}
 
-        .shape-1 { width: 400px; height: 400px; background: rgba(120, 50, 255, 0.3); top: 10%; left: 5%; animation-delay: 0s; }
-        .shape-2 { width: 300px; height: 300px; background: rgba(255, 0, 110, 0.2); top: 60%; right: 10%; animation-delay: -4s; }
-        .shape-3 { width: 350px; height: 350px; background: rgba(58, 134, 255, 0.2); bottom: 5%; left: 35%; animation-delay: -8s; }
+.pfp-wrap{position:relative;margin-bottom:20px}
+.pr{position:absolute;border-radius:50%;border:1px solid rgba(130,0,255,0.3);animation:pr1 6s linear infinite}
+.pr2{inset:-14px;animation-direction:reverse;animation-duration:9s;border-color:rgba(200,0,75,0.18)}
+.pr3{inset:-27px;border:1px dashed rgba(90,0,190,0.12);animation:pr1 16s linear infinite}
+@keyframes pr1{from{transform:rotateZ(0)}to{transform:rotateZ(360deg)}}
+.pr::before{
+  content:'';position:absolute;top:-3px;left:50%;
+  transform:translateX(-50%);width:5px;height:5px;
+  border-radius:50%;background:rgba(170,0,255,0.9);
+  box-shadow:0 0 8px rgba(170,0,255,1);
+}
+.pr2::before{
+  content:'';position:absolute;bottom:-3px;left:50%;
+  transform:translateX(-50%);width:4px;height:4px;
+  border-radius:50%;background:rgba(220,0,75,0.9);
+  box-shadow:0 0 6px rgba(220,0,75,1);
+}
 
-        @keyframes floatShape {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(40px, -40px) scale(1.1); }
-            50% { transform: translate(-20px, 20px) scale(0.95); }
-            75% { transform: translate(20px, 30px) scale(1.05); }
-        }
+.pfp{
+  width:128px;height:128px;border-radius:50%;
+  object-fit:cover;display:block;position:relative;z-index:1;
+  filter:contrast(1.06) saturate(1.1);
+}
+.pfp-wrap:hover .pfp{animation:pfg .25s steps(2) infinite}
+@keyframes pfg{
+  0%{clip-path:inset(10% 0 80% 0);transform:translate(-3px,0)}
+  33%{clip-path:inset(60% 0 10% 0);transform:translate(3px,0)}
+  66%{clip-path:inset(0% 0 0% 0);transform:translate(0,0)}
+  100%{clip-path:none;transform:translate(0,0)}
+}
 
-        .grid-lines {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image:
-                linear-gradient(rgba(120, 50, 255, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(120, 50, 255, 0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-            animation: gridMove 8s linear infinite;
-        }
+.title-wrap{position:relative;margin-bottom:5px;overflow:hidden}
+.title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:66px;letter-spacing:12px;
+  color:#fff;text-transform:uppercase;
+  line-height:1;position:relative;display:inline-block;white-space:nowrap;
+}
+.title::before,.title::after{
+  content:'ZYNTHERAX';
+  position:absolute;top:0;left:0;width:100%;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:66px;letter-spacing:12px;color:#fff;overflow:hidden;
+}
+.title::before{color:rgba(170,0,255,0.75);animation:tg1 5s infinite;clip-path:polygon(0 0,100% 0,100% 35%,0 35%)}
+.title::after{color:rgba(255,0,75,0.6);animation:tg2 5s infinite;clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%)}
+@keyframes tg1{
+  0%,88%,100%{transform:translate(0,0);opacity:0}
+  90%{transform:translate(-4px,0);opacity:1}92%{opacity:0}
+  94%{transform:translate(-2px,0);opacity:1}96%{opacity:0}
+}
+@keyframes tg2{
+  0%,88%,100%{transform:translate(0,0);opacity:0}
+  90%{transform:translate(4px,0);opacity:1}92%{opacity:0}
+  94%{transform:translate(2px,0);opacity:1}96%{opacity:0}
+}
 
-        @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(60px); }
-        }
+.subtitle{
+  font-size:10px;font-weight:300;letter-spacing:7px;
+  color:rgba(255,255,255,0.22);text-transform:uppercase;margin-bottom:26px;
+}
+.divider{
+  width:170px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(130,0,255,0.6),transparent);
+  margin-bottom:26px;position:relative;
+}
+.divider::before{
+  content:'';position:absolute;top:-2px;left:50%;
+  transform:translateX(-50%);width:5px;height:5px;
+  border-radius:50%;background:rgba(170,0,255,0.8);
+}
 
-        .star {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle 2.5s ease-in-out infinite;
-        }
+.roblox-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 22px;
+  border:1px solid rgba(130,0,255,0.3);border-radius:3px;
+  background:rgba(70,0,150,0.07);backdrop-filter:blur(10px);
+  color:rgba(255,255,255,0.65);text-decoration:none;
+  font-size:11px;font-weight:600;letter-spacing:5px;text-transform:uppercase;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.roblox-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(130,0,255,0.12),transparent);
+  transform:translateX(-100%);transition:transform .5s;
+}
+.roblox-btn:hover::before{transform:translateX(100%)}
+.roblox-btn:hover{
+  border-color:rgba(170,0,255,0.7);color:#fff;
+  box-shadow:0 0 22px rgba(130,0,255,0.22),inset 0 0 18px rgba(130,0,255,0.05);
+}
+.roblox-icon{width:21px;height:21px;object-fit:contain}
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.15; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.3); }
-        }
+.status{
+  display:flex;align-items:center;gap:7px;margin-top:18px;
+  font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.18);text-transform:uppercase;
+}
+.sdot{
+  width:5px;height:5px;border-radius:50%;
+  background:#7b2fff;box-shadow:0 0 6px #7b2fff;
+  animation:dp 2s ease-in-out infinite;
+}
+@keyframes dp{0%,100%{opacity:1;box-shadow:0 0 6px #7b2fff}50%{opacity:0.35;box-shadow:0 0 2px #7b2fff}}
 
-        .video-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: -2;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            background: #000;
-        }
+.btxt{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:10;font-size:8px;letter-spacing:5px;
+  color:rgba(255,255,255,0.08);text-transform:uppercase;white-space:nowrap;
+}
 
-        .video-bg.ready { opacity: 1; }
-
-        .overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: -1;
-        }
-
-        .particles {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px; height: 2px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            animation: particleFloat linear infinite;
-        }
-
-        @keyframes particleFloat {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translateY(-10vh) translateX(60px); opacity: 0; }
-        }
-
-        .cursor {
-            position: fixed;
-            width: 20px; height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.08s ease-out, width 0.2s ease, height 0.2s ease;
-            transform: translate(-50%, -50%);
-            mix-blend-mode: difference;
-        }
-
-        .cursor-dot {
-            position: fixed;
-            width: 5px; height: 5px;
-            background: #fff;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-        }
-
-        .cursor.hover {
-            width: 45px; height: 45px;
-            border-color: rgba(120, 50, 255, 0.8);
-            background: rgba(120, 50, 255, 0.1);
-        }
-
-        .trail {
-            position: fixed;
-            width: 6px; height: 6px;
-            background: rgba(120, 50, 255, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            animation: trailFade 0.5s ease-out forwards;
-        }
-
-        @keyframes trailFade {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            text-shadow:
-                0 0 10px rgba(255, 255, 255, 0.8),
-                0 0 20px rgba(255, 255, 255, 0.6),
-                0 0 40px rgba(255, 255, 255, 0.4),
-                0 0 80px rgba(255, 255, 255, 0.2);
-            animation:
-                typewriter 4s steps(9) infinite,
-                shake 0.1s infinite,
-                glowPulse 2s ease-in-out infinite;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 3px solid rgba(255, 255, 255, 0.8);
-            width: 0;
-        }
-
-        @keyframes typewriter {
-            0%, 100% { width: 0; border-right-color: rgba(255, 255, 255, 0.8); }
-            40% { width: 100%; border-right-color: rgba(255, 255, 255, 0.8); }
-            50% { width: 100%; border-right-color: transparent; }
-            60% { width: 100%; border-right-color: rgba(255, 255, 255, 0.8); }
-            90% { width: 0; border-right-color: rgba(255, 255, 255, 0.8); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-1px, 1px); }
-            20% { transform: translate(1px, -1px); }
-            30% { transform: translate(-1px, -1px); }
-            40% { transform: translate(1px, 1px); }
-            50% { transform: translate(-1px, 0); }
-            60% { transform: translate(1px, 0); }
-            70% { transform: translate(0, 1px); }
-            80% { transform: translate(0, -1px); }
-            90% { transform: translate(1px, 1px); }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4), 0 0 80px rgba(255,255,255,0.2); }
-            50% { text-shadow: 0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.6), 0 0 100px rgba(255,255,255,0.4); }
-        }
-
-        .roblox-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px; height: 50px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            color: #fff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(15px);
-            position: relative;
-            overflow: hidden;
-            animation: logoPulse 2s ease-in-out infinite;
-            margin-bottom: 15px;
-        }
-
-        .roblox-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .roblox-btn:hover::before { left: 100%; }
-        .roblox-btn:hover {
-            background: rgba(0, 0, 0, 0.7);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 10px 30px rgba(120, 50, 255, 0.3);
-        }
-
-        @keyframes logoPulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(120, 50, 255, 0.2); }
-            50% { box-shadow: 0 0 25px rgba(120, 50, 255, 0.4); }
-        }
-
-        .roblox-icon { width: 28px; height: 28px; object-fit: contain; }
-
-        .profile-gif {
-            width: 140px; height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid transparent;
-            background: linear-gradient(#000, #000) padding-box,
-                        linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5) border-box;
-            background-size: 400% 400%;
-            animation: borderRotate 4s linear infinite;
-            margin-bottom: 20px;
-            box-shadow: 0 0 50px rgba(120, 50, 255, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-
-        .profile-gif:hover {
-            transform: scale(1.08) translateZ(0);
-            box-shadow: 0 0 70px rgba(120, 50, 255, 0.5);
-        }
-
-        @keyframes borderRotate {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @media (max-width: 480px) {
-            .title { font-size: 32px; letter-spacing: 3px; }
-            .profile-gif { width: 110px; height: 110px; }
-            .roblox-btn { width: 45px; height: 45px; }
-            .roblox-icon { width: 24px; height: 24px; }
-        }
-    </style>
+@media(max-width:480px){
+  .title,.title::before,.title::after{font-size:44px;letter-spacing:7px}
+  .pfp{width:102px;height:102px}
+  .rings-scene{width:320px;height:320px}
+  .r1{width:290px;height:290px;margin:-145px 0 0 -145px}
+  .r2{width:210px;height:210px;margin:-105px 0 0 -105px}
+  .r3{width:140px;height:140px;margin:-70px 0 0 -70px}
+}
+</style>
 </head>
 <body>
-    <div class="fallback-bg" id="fallbackBg">
-        <div class="gradient-mesh" id="gradientMesh"></div>
-        <div class="mouse-glow" id="mouseGlow"></div>
-        <div class="floating-shape shape-1"></div>
-        <div class="floating-shape shape-2"></div>
-        <div class="floating-shape shape-3"></div>
-        <div class="grid-lines"></div>
-        <div id="starsContainer"></div>
-    </div>
 
-    <video class="video-bg" id="videoBg" autoplay muted loop playsinline preload="auto">
-        <source src="https://res.cloudinary.com/dcqeykdxu/video/upload/Black_Dragon_4K_Live_Wallpaper_dr88px.mp4" type="video/mp4">
-    </video>
-    <div class="overlay"></div>
+<video class="video-bg" id="vid" autoplay muted loop playsinline preload="auto">
+  <source src="https://res.cloudinary.com/dcqeykdxu/video/upload/Black_Dragon_4K_Live_Wallpaper_dr88px.mp4" type="video/mp4">
+</video>
 
-    <div class="particles" id="particles"></div>
+<div class="grade grade-dark"></div>
+<div class="grade grade-vignette"></div>
+<div class="grade grade-scanlines"></div>
+<div class="grain"></div>
 
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-dot" id="cursorDot"></div>
+<div class="glitch-lines">
+  <div class="gl"></div><div class="gl"></div>
+  <div class="gl"></div><div class="gl"></div>
+</div>
 
-    <div class="container">
-        <h1 class="title">zyntherax</h1>
+<div class="corner ctl"></div><div class="corner ctr"></div>
+<div class="corner cbl"></div><div class="corner cbr"></div>
 
-        <img src="https://i.pinimg.com/originals/87/8c/53/878c5376b10b2f842a06fae2d386c463.gif"
-             alt="profile"
-             class="profile-gif">
+<div class="hud hudh ht"></div><div class="hud hudh hb"></div>
+<div class="hud hudv hl"></div><div class="hud hudv hr"></div>
 
-        <a href="https://www.roblox.com/tr/users/1582566009/profile"
-           class="roblox-btn"
-           target="_blank"
-           title="Roblox Profilim">
-            <img src="https://media.tenor.com/HO1YAH0_iMcAAAAj/roblox-logo.gif"
-                 alt="Roblox"
-                 class="roblox-icon">
-        </a>
-    </div>
+<div class="orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
 
-    <script>
-        function createStars() {
-            const container = document.getElementById('starsContainer');
-            const fragment = document.createDocumentFragment();
-            for (let i = 0; i < 120; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                const size = Math.random() * 2.5 + 0.5;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                fragment.appendChild(star);
-            }
-            container.appendChild(fragment);
-        }
-        createStars();
+<div class="rings-scene" id="rs">
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+  <div class="ring r3"></div>
+</div>
 
-        const video = document.getElementById('videoBg');
-        const fallbackBg = document.getElementById('fallbackBg');
+<div class="cs cs1">
+  <div class="cube">
+    <div class="face front"></div><div class="face back"></div>
+    <div class="face left"></div><div class="face right"></div>
+    <div class="face top"></div><div class="face bottom"></div>
+  </div>
+</div>
+<div class="cs cs2">
+  <div class="cube">
+    <div class="face front"></div><div class="face back"></div>
+    <div class="face left"></div><div class="face right"></div>
+    <div class="face top"></div><div class="face bottom"></div>
+  </div>
+</div>
 
-        video.addEventListener('loadeddata', function() {
-            video.classList.add('ready');
-            fallbackBg.style.opacity = '0';
-        });
+<div class="particles" id="particles"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cdot"></div>
 
-        video.addEventListener('error', function() {
-            video.style.display = 'none';
-        });
+<div class="wrap">
+  <div class="top-tag">EST. 2024</div>
 
-        const mouseGlow = document.getElementById('mouseGlow');
-        const gradientMesh = document.getElementById('gradientMesh');
-        let mouseX = 0, mouseY = 0;
+  <div class="pfp-wrap">
+    <div class="pr pr3"></div>
+    <div class="pr pr2"></div>
+    <div class="pr" style="inset:-6px"></div>
+    <img class="pfp"
+      src="https://i.pinimg.com/originals/87/8c/53/878c5376b10b2f842a06fae2d386c463.gif"
+      alt="zyntherax">
+  </div>
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            mouseGlow.style.left = mouseX + 'px';
-            mouseGlow.style.top = mouseY + 'px';
-            mouseGlow.style.opacity = '1';
+  <div class="title-wrap">
+    <h1 class="title">ZYNTHERAX</h1>
+  </div>
+  <p class="subtitle">digital phantom</p>
+  <div class="divider"></div>
 
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            const meshX = (mouseX - centerX) / centerX * 20;
-            const meshY = (mouseY - centerY) / centerY * 20;
-            gradientMesh.style.transform = `translate(${meshX}px, ${meshY}px)`;
-        });
+  <a class="roblox-btn"
+     href="https://www.roblox.com/tr/users/1582566009/profile"
+     target="_blank">
+    <img class="roblox-icon"
+      src="https://media.tenor.com/HO1YAH0_iMcAAAAj/roblox-logo.gif"
+      alt="roblox">
+    ROBLOX
+  </a>
 
-        document.addEventListener('mouseleave', () => {
-            mouseGlow.style.opacity = '0';
-            gradientMesh.style.transform = 'translate(0, 0)';
-        });
+  <div class="status">
+    <div class="sdot"></div>online
+  </div>
+</div>
 
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const fragment = document.createDocumentFragment();
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 10 + 6) + 's';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                const size = Math.random() * 2 + 1;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.opacity = Math.random() * 0.4 + 0.2;
-                fragment.appendChild(particle);
-            }
-            container.appendChild(fragment);
-        }
-        createParticles();
+<div class="btxt">zyntherax — mmxxiv</div>
 
-        const cursor = document.getElementById('cursor');
-        const cursorDot = document.getElementById('cursorDot');
-        let cursorX = 0, cursorY = 0;
-        let trailCounter = 0;
+<script>
+const vid=document.getElementById('vid');
+vid.addEventListener('loadeddata',()=>vid.classList.add('ready'));
+vid.addEventListener('error',()=>vid.style.display='none');
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursorDot.style.left = mouseX + 'px';
-            cursorDot.style.top = mouseY + 'px';
+(function(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<55;i++){
+    const p=document.createElement('div');
+    p.className='p';
+    const s=Math.random()*2+0.8;
+    const pur=Math.random()>.5;
+    p.style.cssText=`left:${Math.random()*100}%;width:${s}px;height:${s}px;background:${pur?'rgba(140,0,255,0.7)':'rgba(200,0,70,0.5)'};animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s;`;
+    c.appendChild(p);
+  }
+})();
 
-            trailCounter++;
-            if (trailCounter % 3 === 0) {
-                const trail = document.createElement('div');
-                trail.className = 'trail';
-                trail.style.left = mouseX + 'px';
-                trail.style.top = mouseY + 'px';
-                document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 500);
-            }
-        });
-
-        function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        document.querySelectorAll('a, .profile-gif').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
-    </script>
+const cursor=document.getElementById('cursor'),cdot=document.getElementById('cdot');
+let mx=0,my=0,cx=0,cy=0,tc=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cdot.style.left=mx+'px';cdot.style.top=my+'px';
+  tc++;
+  if(tc%4===0){
+    const t=document.createElement('div');
+    t.className='trail';t.style.left=mx+'px';t.style.top=my+'px';
+    document.body.appendChild(t);setTimeout(()=>t.remove(),600);
+  }
+  const rx=(mx/window.innerWidth-.5)*28;
+  const ry=(my/window.innerHeight-.5)*28;
+  document.querySelector('.orb1').style.transform=`translate(${rx*.7}px,${ry*.7}px)`;
+  document.querySelector('.orb2').style.transform=`translate(${-rx*.5}px,${-ry*.5}px)`;
+  document.getElementById('rs').style.transform=`translate(-50%,-50%) rotateY(${rx*.12}deg) rotateX(${-ry*.08}deg)`;
+});
+(function loop(){
+  cx+=(mx-cx)*.12;cy+=(my-cy)*.12;
+  cursor.style.left=cx+'px';cursor.style.top=cy+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,.pfp').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cursor.classList.add('h'));
+  el.addEventListener('mouseleave',()=>cursor.classList.remove('h'));
+});
+</script>
 </body>
 </html>
