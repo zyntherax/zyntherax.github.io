@@ -329,129 +329,14 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* ===== CEREN CICEGI - SADE TASARIM ===== */
-        .flower-wrapper {
-            position: relative;
-            width: 100px; height: 100px;
-            margin-top: 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .flower {
-            position: relative;
-            width: 70px; height: 70px;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .flower-wrapper:hover .flower {
-            transform: scale(1.1);
-        }
-
-        .flower-wrapper:active .flower { transform: scale(0.95); }
-
-        .petal {
-            position: absolute;
-            width: 24px;
-            height: 38px;
-            background: linear-gradient(180deg, #e84393 0%, #d63031 50%, #a71d5d 100%);
-            border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
-            top: 50%; left: 50%;
-            transform-origin: center bottom;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .petal:nth-child(1) { transform: translate(-50%, -100%) rotate(0deg); }
-        .petal:nth-child(2) { transform: translate(-50%, -100%) rotate(72deg); }
-        .petal:nth-child(3) { transform: translate(-50%, -100%) rotate(144deg); }
-        .petal:nth-child(4) { transform: translate(-50%, -100%) rotate(216deg); }
-        .petal:nth-child(5) { transform: translate(-50%, -100%) rotate(288deg); }
-
-        .flower-wrapper.opened .petal:nth-child(1) { transform: translate(-50%, -105%) rotate(-12deg) scale(1.08); }
-        .flower-wrapper.opened .petal:nth-child(2) { transform: translate(-50%, -105%) rotate(60deg) scale(1.08); }
-        .flower-wrapper.opened .petal:nth-child(3) { transform: translate(-50%, -105%) rotate(132deg) scale(1.08); }
-        .flower-wrapper.opened .petal:nth-child(4) { transform: translate(-50%, -105%) rotate(204deg) scale(1.08); }
-        .flower-wrapper.opened .petal:nth-child(5) { transform: translate(-50%, -105%) rotate(276deg) scale(1.08); }
-
-        .flower-center {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 26px; height: 26px;
-            background: radial-gradient(circle, #fdcb6e 0%, #e17055 100%);
-            border-radius: 50%;
-            z-index: 2;
-            transition: all 0.5s ease;
-        }
-
-        .flower-wrapper.opened .flower-center {
-            transform: translate(-50%, -50%) scale(0.8);
-        }
-
-        /* Cicek uzerinde Ceren yazisi */
-        .flower-text {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            color: #fff;
-            white-space: nowrap;
-            z-index: 3;
-            opacity: 0;
-            text-shadow: 0 0 6px rgba(232, 67, 147, 0.6);
-            pointer-events: none;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            letter-spacing: 1px;
-        }
-
-        .flower-wrapper.opened .flower-text {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-
-        @keyframes flowerSway {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
-        }
-
-        .flower-wrapper:not(.opened) .flower {
-            animation: flowerSway 3s ease-in-out infinite;
-            transform-origin: center bottom;
-        }
-
-        .flower-hint {
-            position: absolute;
-            bottom: -22px; left: 50%;
-            transform: translateX(-50%);
-            font-size: 9px;
-            color: rgba(255, 255, 255, 0.35);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .flower-wrapper:hover .flower-hint { opacity: 1; }
-
-        /* Responsive */
         @media (max-width: 480px) {
             .title { font-size: 32px; letter-spacing: 3px; }
             .profile-gif { width: 110px; height: 110px; }
             .roblox-btn { width: 45px; height: 45px; }
             .roblox-icon { width: 24px; height: 24px; }
-            .flower-wrapper { width: 85px; height: 85px; }
-            .flower { width: 55px; height: 55px; }
-            .petal { width: 20px; height: 32px; }
-            .flower-center { width: 22px; height: 22px; }
-            .flower-text { font-size: 9px; }
         }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -495,12 +380,7 @@
                  alt="Roblox"
                  class="roblox-icon">
         </a>
-
-        <!-- Ceren Cicegi - Sade Tasarim -->
-        <div class="flower-wrapper" id="cerenFlower">
-            <div class="flower">
-                <div class="petal"></div>
-                <div class="petal"></div>
+<div class="petal"></div>
                 <div class="petal"></div>
                 <div class="petal"></div>
                 <div class="petal"></div>
@@ -629,22 +509,9 @@
         }
         animateCursor();
 
-        document.querySelectorAll('a, .profile-gif, .flower-wrapper').forEach(el => {
+        document.querySelectorAll('a, .profile-gif').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
-
-        // ===== CEREN CICEGI =====
-        const flower = document.getElementById('cerenFlower');
-        let isOpen = false;
-
-        flower.addEventListener('click', (e) => {
-            isOpen = !isOpen;
-            if (isOpen) {
-                flower.classList.add('opened');
-            } else {
-                flower.classList.remove('opened');
-            }
         });
     </script>
 </body>
